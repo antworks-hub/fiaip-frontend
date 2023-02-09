@@ -1,0 +1,9 @@
+{
+  "name": "Tenders Database",
+  "short_name": "Tenders Database",
+  "icons": [],
+  "start_url": "./index.html",
+  "display": "standalone",
+  "background_color": "#ffffff",
+  "theme_color": "#f08323"
+}
