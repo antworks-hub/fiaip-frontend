@@ -1,6 +1,6 @@
 {
   "sidebar": {
-    "title": "Tenders Database",
+    "title": "FIAIP CALCOLO LORAZIONE",
     "shortTitle": "VVA",
     "pages": "Pages",
     "pricing": "Pricing",
@@ -24,7 +24,6 @@
     "extendedForms": "Extended Forms",
     "validationForms": "Validation Forms",
     "wizard": "Wizard",
-    "tables": "Tables",
     "regularTables": "Regular Tables",
     "extendedTables": "Extended Tables",
     "paginatedTables": "Paginated Tables",
@@ -36,10 +35,18 @@
     "charts": "Charts",
     "calendar": "Calendar",
 
-    "dashboard": "Dashboard",
-    "tenders": "Tenders",
+    "dashboard": "Riepilogo",
     "admin": "Admin",
     "admins": "Admins",
-    "import": "Imports"
+    "import": "Imports",
+    "calculate": "calcolo locazione",
+    "attachments": "allegati",
+    "errors": "segnalazione errori",
+    "agents": "agenti",
+    "users": "utenti",
+    "tables": "tabelle",
+    "manage-errors": "gestione errori",
+    "manage-attachments": "gestione allegati",
+    "users-log": "log accessi simultanei"
   }
 }

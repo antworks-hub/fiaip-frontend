@@ -3,12 +3,12 @@
     <div class="col-12">
       <card>
         <page-header
-          title="MODIFICA AMMINISTRATORE"
+          title="MODIFICA UTENTE"
           :loading="isLoading"
           @backClick="$router.back()"
         />
-        <admin-form
-          :value="admin"
+        <user-form
+          :value="user"
           :api-errors="apiErrors"
           :is-loading="isLoading"
           @submit="handleSubmit"
@@ -22,13 +22,13 @@
 </template>
 <script>
 import { mapGetters, mapActions } from 'vuex'
-import AdminForm from './Form.vue'
+import UserForm from './Form.vue'
 
 export default {
-  components: { AdminForm },
+  components: { UserForm },
   data () {
     return {
-      adminId: null,
+      userId: null,
       isLoading: false,
       apiErrors: {}
     }
@@ -36,34 +36,34 @@ export default {
 
   computed: {
     ...mapGetters({
-      admin: 'admins/single'
+      user: 'users/single'
     })
   },
 
   created () {
-    this.adminId = this.$route.params.id
-    this.getAdmin(this.adminId)
+    this.userId = this.$route.params.id
+    this.getUser(this.userId)
   },
 
   beforeDestroy () {
-    this.clearAdmin()
+    this.clearUser()
   },
 
   methods: {
     ...mapActions({
-      getAdmin: 'admins/get',
-      updateAdmin: 'admins/update',
-      deleteAdmin: 'admins/delete',
+      getUser: 'users/get',
+      updateUser: 'users/update',
+      deleteUser: 'users/delete',
       reloadUser: 'auth/reload',
-      clearAdmin: 'admins/resetSingle',
-      updateValue: 'admins/updateValue'
+      clearUser: 'users/resetSingle',
+      updateValue: 'users/updateValue'
     }),
     handleSubmit () {
       this.isLoading = true
-      this.updateAdmin({ id: this.adminId, payload: this.admin }).then((res) => {
+      this.updateUser({ id: this.userId, payload: this.user }).then((res) => {
         this.$notify({
           message:
-            'Amministratore aggiornato con successo.',
+            'Utente aggiornato con successo.',
           timeout: 5000,
           icon: '',
           horizontalAlign: 'right',
@@ -72,7 +72,7 @@ export default {
         })
         this.reloadUser().then((res) => {
           this.isLoading = false
-          this.$router.push('/amministratori')
+          this.$router.push('/utenti')
         })
       }).catch((err) => {
         this.isLoading = false
@@ -83,18 +83,18 @@ export default {
     },
     handleDelete () {
       this.isLoading = true
-      this.deleteAdmin(this.adminId).then((res) => {
+      this.deleteUser(this.userId).then((res) => {
         this.isLoading = false
         this.$notify({
           message:
-            'Amministratore eliminato con successo.',
+            'Utente eliminato con successo.',
           timeout: 5000,
           icon: '',
           horizontalAlign: 'right',
           verticalAlign: 'top',
           type: 'success'
         })
-        this.$router.push('/amministratori')
+        this.$router.push('/utenti')
       })
     }
   }

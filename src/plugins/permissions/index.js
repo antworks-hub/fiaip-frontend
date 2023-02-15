@@ -9,7 +9,7 @@ const PermissionsPlugin = {
       const userObject = JSON.parse(secureStorage.getItem('user'))
       const user = userObject ? userObject.user : false
       if (user) {
-        const isAdmin = user.admin
+        const isAdmin = (user.user_level_id == 1)
         return isAdmin
       } else {
         return false

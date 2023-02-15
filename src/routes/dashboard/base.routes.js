@@ -5,7 +5,7 @@ const EditUserProfile = () =>
 
 export default [
   {
-    path: 'riepilogo',
+    path: '/riepilogo',
     name: 'Dashboard',
     components: { default: Dashboard }
   },

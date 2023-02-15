@@ -1,5 +1,5 @@
 import Crud from '../utils/crud'
-const crud = new Crud('/tenders')
+const crud = new Crud('/errors')
 
 const state = () => ({
   ...crud.state

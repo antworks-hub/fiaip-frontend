@@ -6,7 +6,7 @@
 export default {
   name: 'App',
   metaInfo: {
-    title: 'Tenders Database'
+    title: 'FIAIP'
   }
 }
 </script>

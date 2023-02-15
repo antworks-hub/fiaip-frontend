@@ -1,6 +1,6 @@
 {
-  "name": "Tenders Database",
-  "short_name": "Tenders Database",
+  "name": "FIAIP",
+  "short_name": "FIAIP",
   "icons": [],
   "start_url": "./index.html",
   "display": "standalone",

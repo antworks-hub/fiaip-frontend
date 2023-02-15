@@ -9,45 +9,88 @@
       :title="$t('sidebar.title')"
     >
       <template slot="links">
-        <div
-          v-if="$isAdmin()"
-        >
+        <div>
           <sidebar-item
             :link="{
-              name: $t('sidebar.admins'),
+              name: $t('sidebar.dashboard'),
               iconFamily: 'mdi',
-              icon: 'barcode',
-              path: '/admins'
+              icon: 'note-text',
+              path: '/riepilogo'
             }"
           />
 
           <sidebar-item
               :link="{
-              name: $t('sidebar.tenders'),
+              name: $t('sidebar.calculate'),
               iconFamily: 'mdi',
               icon: 'note-text',
-              path: '/tenders'
+              path: '/calcoli'
+            }"
+          />
+
+          <sidebar-item
+              :link="{
+              name: $t('sidebar.attachments'),
+              iconFamily: 'mdi',
+              icon: 'note-text',
+              path: '/allegati'
+            }"
+          />
+
+          <sidebar-item
+              :link="{
+              name: $t('sidebar.errors'),
+              iconFamily: 'mdi',
+              icon: 'note-text',
+              path: '/errori'
             }"
           />
 
         </div>
-
-        <div v-else>
+        <div class="logo"></div>
+        <div v-if="$isAdmin()">
           <sidebar-item
             :link="{
-              name: $t('sidebar.dashboard'),
-              iconFamily: 'tim',
-              icon: 'tim-icons icon-chart-pie-36',
-              path: '/dashboard'
+              name: $t('sidebar.users'),
+              iconFamily: 'mdi',
+              icon: 'note-text',
+              path: '/utenti'
             }"
           />
 
           <sidebar-item
             :link="{
-              name: $t('sidebar.tenders'),
+              name: $t('sidebar.tables'),
               iconFamily: 'mdi',
               icon: 'note-text',
-              path: '/tenders'
+              path: '/tabelle'
+            }"
+          />
+
+          <sidebar-item
+              :link="{
+              name: $t('sidebar.manage-errors'),
+              iconFamily: 'mdi',
+              icon: 'note-text',
+              path: '/gestione-errori'
+            }"
+          />
+
+          <sidebar-item
+              :link="{
+              name: $t('sidebar.manage-attachments'),
+              iconFamily: 'mdi',
+              icon: 'note-text',
+              path: '/gestione-allegati'
+            }"
+          />
+
+          <sidebar-item
+              :link="{
+              name: $t('sidebar.users-log'),
+              iconFamily: 'mdi',
+              icon: 'note-text',
+              path: '/log-utenti'
             }"
           />
 

@@ -13,7 +13,7 @@
                   <form @submit.prevent="handleSubmit(submit)">
                     <card class="card-login card-white bg-vitevini d-flex justify-content-center align-items-center mt-4">
                       <template slot="header">
-                        <img src="img/site/ExactSciences-logo.png" alt="" width="250px">
+                        <img src="img/site/app-logo.png" alt="" width="250px">
                       </template>
                       <div>
                         <div class="d-flex">

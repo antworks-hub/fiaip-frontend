@@ -1,5 +1,5 @@
 import Crud from '../utils/crud'
-const crud = new Crud('/procedure-typologies')
+const crud = new Crud('/users')
 
 const state = () => ({
   ...crud.state

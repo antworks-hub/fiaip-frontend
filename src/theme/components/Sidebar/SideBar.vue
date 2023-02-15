@@ -2,7 +2,7 @@
   <div class="sidebar" :data="backgroundColor">
     <div ref="sidebarScrollArea" class="sidebar-wrapper">
       <div class="logo">
-        <a href="https://vitevini.com" class="simple-text logo-full">
+        <a href="/dashboard" class="simple-text logo-full">
           <img :src="logo" alt="app-logo">
         </a>
       </div>
@@ -38,7 +38,7 @@ export default {
   props: {
     title: {
       type: String,
-      default: 'Tenders Database',
+      default: 'FIAIP',
       description: 'Sidebar title'
     },
     shortTitle: {
@@ -48,7 +48,7 @@ export default {
     },
     logo: {
       type: String,
-      default: '/img/site/ExactSciences-logo.png',
+      default: '/img/site/app-logo.png',
       description: 'Sidebar app logo'
     },
     backgroundColor: {

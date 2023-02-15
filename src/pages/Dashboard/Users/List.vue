@@ -3,7 +3,7 @@
     <div class="col-12">
       <card>
         <page-header
-          title="AMMINISTRATORI"
+          title="UTENTI"
           @backClick="$router.back()"
         />
 
@@ -11,13 +11,13 @@
           v-model="query"
           :pagination="pagination"
           :columns="tableColumns"
-          :items="admins"
+          :items="users"
           :search-fields="searchFields"
           :meta="meta"
           name-prop="last_name"
-          new-button-label="NUOVO AMMINISTRATORE"
-          @onNew="$router.push('amministratori/nuovo')"
-          @onEdit="$router.push(`amministratori/${$event.id}/modifica`)"
+          new-button-label="NUOVO UTENTE"
+          @onNew="$router.push('utenti/nuovo')"
+          @onEdit="$router.push(`utenti/${$event.id}/modifica`)"
           @onDelete="handleDelete($event.id)"
         />
       </card>
@@ -69,6 +69,12 @@ export default {
           label: 'Email',
           sortable: true,
           minWidth: 250
+        },
+        {
+          prop: 'user_level.level',
+          label: 'Livello',
+          sortable: true,
+          minWidth: 250
         }
       ]
     }
@@ -76,8 +82,8 @@ export default {
 
   computed: {
     ...mapGetters({
-      admins: 'admins/items',
-      meta: 'admins/meta'
+      users: 'users/items',
+      meta: 'users/meta'
     })
   },
 
@@ -98,7 +104,7 @@ export default {
 
   created () {
     const storedQuery = JSON.parse(secureStorage.getItem('tableQuery'))
-    if (storedQuery && storedQuery.entity === 'admins') {
+    if (storedQuery && storedQuery.entity === 'users') {
       this.query = storedQuery.query
     } else {
       this.handleFetch()
@@ -106,25 +112,25 @@ export default {
   },
 
   beforeDestroy () {
-    this.clearAdmins()
+    this.clear_Users()
   },
 
   methods: {
     ...mapActions({
-      fetchAdmins: 'admins/fetch',
-      deleteAdmin: 'admins/delete',
-      clearAdmins: 'admins/resetItems'
+      fetch_Users: 'users/fetch',
+      delete_User: 'users/delete',
+      clear_Users: 'users/resetItems'
     }),
     handleFetch () {
-      this.fetchAdmins(this.query)
-      secureStorage.setItem('tableQuery', JSON.stringify({ entity: 'admins', query: this.query }))
+      this.fetch_Users(this.query)
+      secureStorage.setItem('tableQuery', JSON.stringify({ entity: 'users', query: this.query }))
     },
     handleDelete (id) {
-      this.deleteAdmin(id).then((res) => {
-        this.fetchAdmins(this.query)
+      this.delete_User(id).then((res) => {
+        this.fetch_Users(this.query)
         this.$notify({
           message:
-            'Amministratore eliminato con successo.',
+            'Utente eliminato con successo.',
           timeout: 5000,
           icon: '',
           horizontalAlign: 'right',

@@ -5,7 +5,7 @@
         <form @submit.prevent="handleSubmit(submit)">
           <card class="card-login card-white bg-vitevini">
             <template slot="header">
-              <img src="img/site/ExactSciences-logo.png" alt="">
+              <img src="img/site/app-logo.png" alt="">
             </template>
             <div>
               <div class="d-flex mb-3">

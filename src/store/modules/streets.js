@@ -1,5 +1,5 @@
 import Crud from '../utils/crud'
-const crud = new Crud('/admins')
+const crud = new Crud('/streets')
 
 const state = () => ({
   ...crud.state

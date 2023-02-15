@@ -20,7 +20,7 @@
         </button>
       </div>
       <!-- <a class="navbar-brand">{{ routeName }}</a> -->
-      <a class="navbar-brand">TENDERS DATABASE</a>
+      <a class="navbar-brand">FIAIP</a>
     </div>
 
     <ul class="navbar-nav ml-auto">
