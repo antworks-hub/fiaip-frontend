@@ -11,21 +11,17 @@
             <template slot="header">
                 <h3 class="card-title text-left">Inserimento nuovo calcolo</h3>
             </template>
-        
-            <template #topSummary>
-                <TopSummary :computation="value"></TopSummary>
-            </template>
-        
+
             <template #customButtons>
                 <div class="col-12 mt-4">
                     <div class="pull-right">
-                        <base-button type="primary" wide class="btn-next" :disabled="isLoading" @click="$emit('cancelComputation')">
+                        <base-button type="primary" wide class="btn-next" :disabled="cancelButtonDisabledStatus" @click="$emit('cancelComputation')">
                             Annulla
                         </base-button>
-                        <base-button type="primary" wide class="btn-next" :disabled="nextButtonDisabledStatus" @click="$refs.wizard.nextTab()">
+                        <base-button type="primary" wide class="btn-next" v-if="showNextButton" :disabled="nextButtonDisabledStatus" @click="$refs.wizard.nextTab()">
                             Avanti
                         </base-button>
-                        <base-button type="primary" wide class="btn-next" :disabled="saveButtonDisabledStatus" :loading="isLoading" @click="$emit('saveComputation')">
+                        <base-button type="primary" wide class="btn-next" v-if="showCalculateButton" :loading="isLoading" @click="$emit('saveComputation')">
                             Calcolo
                         </base-button>
                     </div>
@@ -80,7 +76,7 @@
               />
           </wizard-tab>
 
-          <wizard-tab :before-change="() => validateStep('step4')">
+          <wizard-tab>
               <template slot="label">
                   <i class="tim-icons icon-delivery-fast"></i>
                   <p style="min-width: 150px">Calcolo del canone di locazione</p>
@@ -95,7 +91,6 @@
 </template>
 
 <script>
-import TopSummary from './Components/TopSummary.vue'
 import { Step1, Step2, Step3, Step4 } from './Steps/steps.js'
 import { SimpleWizard, WizardTab } from '@/theme/components/index'
 
@@ -141,7 +136,6 @@ export default {
         Step2,
         Step3,
         Step4,
-        TopSummary,
         SimpleWizard,
         WizardTab
     },
@@ -156,47 +150,54 @@ export default {
         hasTopSummary() {
             return true;
         },
-        nextButtonDisabledStatus() {
-            if(this.isLoading) {
-                return true
-            } else {
-                switch(String(this.activeTab)) {
-                    case "0":
-                        return this.$refs["step1"] && !this.$refs["step1"].validate()
-                    case "1":
-                        return this.$refs["step2"] && !this.$refs["step2"].validate()
-                    case "2":
-                        return this.$refs["step3"] && !this.$refs["step3"].validate()
-                    case "3":
-                        return this.$refs["step4"] && !this.$refs["step4"].validate()
-                    default:
-                        return false
-                }
+        showNextButton() {
+            switch(String(this.activeTab)) {
+                case "0":
+                case "1":
+                    return true
+                default:
+                    return false
             }
         },
-        prevButtonDisabledStatus() {
-          if(this.isLoading) {
-              return true
-          } else {
-              switch(String(this.activeTab)) {
-                case "0":
-                  return true
-                default:
-                  return false;
-              }
-          }
-        },
-        saveButtonDisabledStatus() {
-          if(this.isLoading) {
+        nextButtonDisabledStatus() {
+          if (this.isLoading) {
             return true
           } else {
-            switch(String(this.activeTab)) {
-              case "4":
+            switch (String(this.activeTab)) {
+              case "0":
+                return this.$refs["step1"] && !this.$refs["step1"].validate()
+              case "1":
+                return this.$refs["step2"] && !this.$refs["step2"].validate()
+              case "2":
                 return true
               default:
-                return false;
+                return false
             }
           }
+        },
+        prevButtonDisabledStatus() {
+            switch(String(this.activeTab)) {
+                case "0":
+                    return true
+                default:
+                    return false;
+          }
+        },
+        showCalculateButton() {
+            switch(String(this.activeTab)) {
+                case "2":
+                    return true
+                default:
+                    return false
+            }
+        },
+        cancelButtonDisabledStatus() {
+            switch(String(this.activeTab)) {
+                case "3":
+                    return true
+                default:
+                    return false
+            }
         },
     },
 

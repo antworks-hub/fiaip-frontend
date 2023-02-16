@@ -7,13 +7,7 @@
                         <div class="card-title">
                             <h3>Visualizza Ordine</h3>
                         </div>
-                        <TopSummary :order="order" :is-review-tab="true"></TopSummary>
-                        <CartSummary :order="order" :is-review-tab-active="true" :flat-total="flatTotal" :total-quantity="totalQuantity"
-                            :total="total" :total-discount="totalDiscount" :total-discounted="totalDiscounted"
-                            :discount-percentage="discountPercentage"
-                            :shipping-costs="shippingCosts"
-                            :total-discounted-with-shipping="totalDiscountedWithShipping" 
-                            :total-discounted-with-shipping-and-iva="totalDiscountedWithShippingAndIva" readonly />
+
                     </div>
                 </div>
             </div>
@@ -21,13 +15,12 @@
     </div>
 </template>
 <script>
-import TopSummary from './Components/TopSummary.vue'
+
 import { mapActions, mapGetters } from 'vuex';
 
 import ComputationMixin from '@/mixins/ComputationMixin'
 
 export default {
-    components: { TopSummary, CartSummary },
 
     mixins: [ComputationMixin],
 
