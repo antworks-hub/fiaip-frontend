@@ -130,7 +130,7 @@ export default {
             clearConstraints: 'constraints/resetItems'
         }),
         validate() {
-            return true;
+            return this.computation.contract_type && this.computation.forniture && this.computation.constraint && this.computation.surface;
         },
         handleSubmit() {
         },

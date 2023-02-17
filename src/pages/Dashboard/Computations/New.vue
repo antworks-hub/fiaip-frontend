@@ -2,7 +2,8 @@
     <div>
         <div class="row d-flex justify-content-center">
             <div class="col-12">
-                <FormWizard 
+                <FormWizard
+                    ref="wizard"
                     v-model="computation"
                     :apiErrors="apiErrors"
                     :is-loading="isLoading"
@@ -34,28 +35,25 @@ export default {
             computation: {
                 id: null,
                 user: null,
-                name_or_code: null,
-                area: null,
-                district: null,
-                location_range: null,
-                street: null,
-                street_number: null,
+                name_or_code: 'giorgio',
+                area: 4,
+                district: 23,
+                location_range: 73,
+                street: 3832,
+                street_number: 6704,
                 zip_code: null,
-                elements: [],
-                actual_street_number: null,
-                apartment_number: null,
+                elements: [1, 2, 3],
+                actual_street_number: '29',
+                apartment_number: '5',
                 stair: null,
-                contract_type: null,
-                forniture: null,
-                constraint: null,
-                surface: null
+                contract_type: 5,
+                forniture: 3,
+                constraint: 3,
+                surface: 150
             }
         }
     },
     computed: {
-        ...mapGetters({
-            locationRates: 'computations/items'
-        })
     },
     methods: {
         ...mapActions({
@@ -88,9 +86,10 @@ export default {
                 this.calculateLocationRates(this.computation.id)
                 this.isLoading = false
                 //this.$router.push('/computations')
-                this.wizard.nextTab()
+                this.$refs.wizard.$refs.wizard.nextTab()
             }).catch((err) => {
                 this.isLoading = false
+                console.log(err)
                 if (err.response.status === 422) {
                     this.apiErrors = err.response.data.content
                 }

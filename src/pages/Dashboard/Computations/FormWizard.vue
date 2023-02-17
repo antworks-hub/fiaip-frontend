@@ -24,6 +24,9 @@
                         <base-button type="primary" wide class="btn-next" v-if="showCalculateButton" :loading="isLoading" @click="$emit('saveComputation')">
                             Calcolo
                         </base-button>
+                        <base-button type="primary" wide class="btn-next" v-if="showDownloadComputationPdfButton" :loading="isLoading" @click="$emit('downloadComputationPdf')">
+                          Scarica PDF
+                        </base-button>
                     </div>
         
                     <div class="pull-left">
@@ -48,6 +51,7 @@
                     @setActualStreetNumber="setActualStreetNumber($event)"
                     @setApartmentNumber="setApartmentNumber($event)"
                     @setStair="setStair($event)"
+                    @validateStep1="validateStep1($event)"
                 />
             </wizard-tab>
 
@@ -101,21 +105,21 @@ export default {
             default: () => {
                 return {
                     user: null,
-                    name_or_code: null,
-                    area: null,
-                    district: null,
-                    location_range: null,
-                    street: null,
-                    street_number: null,
+                    name_or_code: 'giorgio',
+                    area: 4,
+                    district: 23,
+                    location_range: 73,
+                    street: 3832,
+                    street_number: 6704,
                     zip_code: null,
-                    elements: [],
-                    actual_street_number: null,
-                    apartment_number: null,
+                    elements: [1, 2, 3],
+                    actual_street_number: '29',
+                    apartment_number: '5',
                     stair: null,
-                    contract_type: null,
-                    forniture: null,
-                    constraint: null,
-                    surface: null
+                    contract_type: 5,
+                    forniture: 3,
+                    constraint: 3,
+                    surface: 150
                 }
             }
         },
@@ -142,7 +146,8 @@ export default {
 
     data() {
         return {
-            activeTab: "0"
+            activeTab: "0",
+            isStep1Valid: false
         }
     },
 
@@ -165,7 +170,7 @@ export default {
           } else {
             switch (String(this.activeTab)) {
               case "0":
-                return this.$refs["step1"] && !this.$refs["step1"].validate()
+                return false //this.isStep1Valid || (this.$refs["step1"] && !this.$refs["step1"].validate())
               case "1":
                 return this.$refs["step2"] && !this.$refs["step2"].validate()
               case "2":
@@ -199,6 +204,14 @@ export default {
                     return false
             }
         },
+        showDownloadComputationPdfButton() {
+          switch(String(this.activeTab)) {
+            case "3":
+              return true
+            default:
+              return false
+          }
+        }
     },
 
     methods: {
@@ -268,7 +281,10 @@ export default {
             this.activeTab = newTab.tabId
         },
         validateStep(ref) {
-            return this.$refs[ref].validate();
+            return this.$refs[ref].validate()
+        },
+        validateStep1(isValid) {
+          this.isStep1Valid = isValid
         }
     }
 }

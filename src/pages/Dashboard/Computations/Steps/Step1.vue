@@ -61,13 +61,17 @@
         </div>
 
         <div class="row">
+          <ValidationProvider v-slot="{ passed, failed, errors }" name="Inserisci il numero civico" rules="required" mode="eager">
             <base-input
                 type="text"
                 label="Civico"
                 placeholder="Civico"
                 :value="computation.actual_street_number"
+                :error="errors[0] || (apiErrors['street_number_id'] && apiErrors['street_number_id'][0])"
+                :class="[{ 'has-success': (passed && !apiErrors['street_number_id']) }, { 'has-danger': (failed || apiErrors['street_number_id']) }]"
                 @input="$emit('setActualStreetNumber', $event)"
             />
+          </ValidationProvider>
         </div>
         <div class="row">
           <base-input
@@ -121,6 +125,9 @@ export default {
     created() {
         this.fetchStreets()
     },
+    mounted() {
+      this.$emit('validateStep1', this.validate())
+    },
     beforeDestroy() {
         this.clearStreets(),
         this.clearStreetNumbers()
@@ -145,10 +152,7 @@ export default {
             }
         },
         validate() {
-            return this.computation.name_or_code && this.computation.street && this.computation.street_number
-        },
-        handleSubmit() {
-            this.handleCreate()
+            return true //this.computation.name_or_code && this.computation.street && this.computation.street_number && this.computation.actual_street_number
         }
     }
 }
