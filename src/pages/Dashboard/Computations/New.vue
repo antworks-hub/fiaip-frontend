@@ -9,6 +9,7 @@
                     :is-loading="isLoading"
                     @saveComputation="saveComputation"
                     @cancelComputation="cancelComputation"
+                    @downloadComputationPdf="downloadComputationPdf"
                     @clearErrors="apiErrors = {}"
                 />
             </div>
@@ -20,6 +21,7 @@ import FormWizard from './FormWizard.vue'
 import { mapActions, mapGetters } from 'vuex'
 import ComputationWizardMixin from '@/mixins/ComputationWizardMixin'
 import ComputationMixin from '@/mixins/ComputationMixin'
+import axios from 'axios'
 
 import swal from 'sweetalert2'
 
@@ -94,6 +96,23 @@ export default {
                     this.apiErrors = err.response.data.content
                 }
             })
+        },
+        downloadComputationPdf(computation) {
+          let filename = 'Scheda_canone.pdf'
+          if(!this.isDownloading) {
+            this.isDownloading = true;
+            axios({
+              url: '/computations/' + computation.id + '/download',
+              method: 'GET',
+              responseType: 'blob',
+            }).then((response) => {
+              let link = document.createElement('a')
+              link.href = window.URL.createObjectURL(new Blob([response.data]))
+              link.setAttribute('download', filename);
+              link.click()
+              this.isDownloading = false
+            });
+          }
         }
     }
 }

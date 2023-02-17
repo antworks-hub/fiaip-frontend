@@ -1,6 +1,7 @@
 <template>
     <div class="row">
         <div class="col-12 mt-3">
+          <h4>Seleziona gli elementi caratteristici:</h4>
             <div v-for="element in elements">
                 <base-checkbox v-model="selectedElements" :value="element.id"
                                :name="element.id"

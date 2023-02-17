@@ -1,8 +1,7 @@
 <template>
+  <ValidationObserver ref="form">
   <div class="row">
-    <div class="col-12 mt-3">
-      <ValidationObserver ref="form">
-        <div class="row">
+        <div class="col-6 mt-3">
           <ValidationProvider
               v-slot="{ passed, failed, errors }"
               name="Nome cliente / Codice immobile"
@@ -22,7 +21,7 @@
           </ValidationProvider>
         </div>
 
-        <div class="row">
+        <div class="col-6 mt-3">
           <ValidationProvider v-slot="{ passed, failed, errors }" name="Cerca il nome della Via / Piazza" rules="required" mode="eager">
             <base-select
                 required
@@ -41,7 +40,7 @@
           </ValidationProvider>
         </div>
 
-        <div class="row">
+        <div class="col-6 mt-3">
           <ValidationProvider v-slot="{ passed, failed, errors }" name="Seleziona i numeri civici di appartenenza" rules="required" mode="eager">
             <base-select
                 :disabled="!computation.street"
@@ -60,7 +59,7 @@
           </ValidationProvider>
         </div>
 
-        <div class="row">
+        <div class="col-6 mt-3">
           <ValidationProvider v-slot="{ passed, failed, errors }" name="Inserisci il numero civico" rules="required" mode="eager">
             <base-input
                 type="text"
@@ -73,7 +72,7 @@
             />
           </ValidationProvider>
         </div>
-        <div class="row">
+        <div class="col-6 mt-3">
           <base-input
               type="text"
               label="Interno"
@@ -82,7 +81,7 @@
               @input="$emit('setApartmentNumber', $event)"
           />
         </div>
-        <div class="row">
+        <div class="col-6 mt-3">
           <base-input
               type="text"
               label="Scala"
@@ -91,10 +90,8 @@
               @input="$emit('setStair', $event)"
           />
         </div>
-
-      </ValidationObserver>
     </div>
-  </div>
+  </ValidationObserver>
 </template>
 
 <script>

@@ -24,7 +24,7 @@
                         <base-button type="primary" wide class="btn-next" v-if="showCalculateButton" :loading="isLoading" @click="$emit('saveComputation')">
                             Calcolo
                         </base-button>
-                        <base-button type="primary" wide class="btn-next" v-if="showDownloadComputationPdfButton" :loading="isLoading" @click="$emit('downloadComputationPdf')">
+                        <base-button type="primary" wide class="btn-next" v-if="showDownloadComputationPdfButton" :loading="isLoading" @click.native="$emit('downloadComputationPdf', value)">
                           Scarica PDF
                         </base-button>
                     </div>
