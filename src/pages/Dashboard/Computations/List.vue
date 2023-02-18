@@ -2,9 +2,9 @@
   <div class="row">
     <div class="col-12">
       <card>
-        <page-header title="CALCOLI LOCAZIONE" :query="query" @backClick="$router.back()" />
+        <page-header title="CALCOLI LOCAZIONEEE" :query="query" @backClick="$router.back()" />
         <list-table v-model="query" :pagination="pagination" :columns="computedColumns" :items="computations" :meta="meta"
-          :search-fields="searchFields" name-prop="business_name" hide-default-search :deletable="false"
+          :search-fields="searchFields" name-prop="name_or_code" hide-default-search :deletable="false"
           :editable="false" :creable="true"
           new-button-label="NUOVO CALCOLO"
           @onNew="$router.push('calcoli/nuovo')"
@@ -14,7 +14,7 @@
             <el-tooltip content="Scarica PDF" :effect="props.darkMode ? 'light' : 'dark'"
               :open-delay="300" placement="top">
               <base-button class="edit btn-link" type="warning" size="sm" icon
-                @click.native="downloadPdf(props.row)">
+                @click.native="downloadComputationPdf(props.row)">
                 <i v-if="!isDownloading" class="tim-icons icon-paper" />
                 <i v-else class="fas fa-spinner fa-spin" />
               </base-button>
@@ -29,12 +29,13 @@
 <script>
 import { mapGetters, mapActions } from 'vuex'
 import { ListTable } from '@/theme/components/index'
-
+import ComputationMixin from '@/mixins/ComputationMixin'
 import secureStorage from '@/utils/secureStorage'
 import axios from 'axios'
 import swal from "sweetalert2";
 
 export default {
+  mixins: [ComputationMixin],
   components: {
     ListTable
   },
@@ -47,9 +48,7 @@ export default {
         page: 1,
         sort: null,
         filter: {
-          custom_search: '',
-          quotation: false,
-          reservation: false
+          custom_search: ''
         }
       },
       pagination: {
@@ -86,11 +85,11 @@ export default {
           sortable: true
         },
         {
-          prop: 'street.street_name',
+          prop: 'street.printable_street_name',
           label: 'Indirizzo'
         },
         {
-          prop: 'street_number.number',
+          prop: 'actual_street_number',
           label: 'Civico'
         }
       ]
@@ -147,23 +146,6 @@ export default {
     handleFetch() {
       this.fetchComputations(this.query)
       secureStorage.setItem('tableQuery', JSON.stringify({ entity: 'computations', query: this.query }))
-    },
-    downloadPdf(computation) {
-      let filename = 'Calcolo_' + computation.id + '.pdf'
-      if(!this.isDownloading) {
-        this.isDownloading = true;
-        axios({
-          url: '/computations/' + computation.id + '/download',
-          method: 'GET',
-          responseType: 'blob',
-        }).then((response) => {
-          let link = document.createElement('a')
-          link.href = window.URL.createObjectURL(new Blob([response.data]))
-          link.setAttribute('download', filename);
-          link.click()
-          this.isDownloading = false
-        });
-      }
     }
   }
 }

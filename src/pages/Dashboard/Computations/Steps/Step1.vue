@@ -1,95 +1,103 @@
 <template>
   <ValidationObserver ref="form">
-  <div class="row">
-        <div class="col-6 mt-3">
-          <ValidationProvider
-              v-slot="{ passed, failed, errors }"
-              name="Nome cliente / Codice immobile"
-              rules="required"
-              mode="eager"
-          >
-            <base-input
-                required
-                type="text"
-                label="Nome cliente / Codice immobile"
-                placeholder="Nome cliente / Codice immobile"
-                :error="errors[0] || (apiErrors['name_or_code'] && apiErrors['name_or_code'][0])"
-                :class="[{ 'has-success': (passed && !apiErrors['name_or_code']) }, { 'has-danger': (failed || apiErrors['name_or_code']) }]"
-                :value="computation.name_or_code"
-                @input="$emit('setNameOrCode', $event)"
-            />
-          </ValidationProvider>
-        </div>
-
-        <div class="col-6 mt-3">
-          <ValidationProvider v-slot="{ passed, failed, errors }" name="Cerca il nome della Via / Piazza" rules="required" mode="eager">
-            <base-select
-                required
-                :value="computation.street"
-                size="large"
-                label="Cerca il nome della Via / Piazza (almeno 2 lettere)"
-                :items="streets"
-                autocomplete="full_street_name"
-                item-name="full_street_name"
-                placeholder="Cerca il nome della Via / Piazza (almeno 2 lettere)"
-                :error="errors[0] || (apiErrors['street_id'] && apiErrors['street_id'][0])"
-                :class="[{ 'has-success': (passed && !apiErrors['street_id']) }, { 'has-danger': (failed || apiErrors['street_id']) }]"
-                filterable
-                @input="onStreetSelected($event)"
-            />
-          </ValidationProvider>
-        </div>
-
-        <div class="col-6 mt-3">
-          <ValidationProvider v-slot="{ passed, failed, errors }" name="Seleziona i numeri civici di appartenenza" rules="required" mode="eager">
-            <base-select
-                :disabled="!computation.street"
-                required
-                :value="computation.street_number"
-                size="large"
-                label="Seleziona i numeri civici di appartenenza"
-                :items="streetNumbers"
-                autocomplete="full_number"
-                item-name="full_number"
-                placeholder="Seleziona i numeri civici di appartenenza"
-                :error="errors[0] || (apiErrors['street_number_id'] && apiErrors['street_number_id'][0])"
-                :class="[{ 'has-success': (passed && !apiErrors['street_number_id']) }, { 'has-danger': (failed || apiErrors['street_number_id']) }]"
-                @input="$emit('setStreetNumber', $event)"
-            />
-          </ValidationProvider>
-        </div>
-
-        <div class="col-6 mt-3">
-          <ValidationProvider v-slot="{ passed, failed, errors }" name="Inserisci il numero civico" rules="required" mode="eager">
-            <base-input
-                type="text"
-                label="Civico"
-                placeholder="Civico"
-                :value="computation.actual_street_number"
-                :error="errors[0] || (apiErrors['street_number_id'] && apiErrors['street_number_id'][0])"
-                :class="[{ 'has-success': (passed && !apiErrors['street_number_id']) }, { 'has-danger': (failed || apiErrors['street_number_id']) }]"
-                @input="$emit('setActualStreetNumber', $event)"
-            />
-          </ValidationProvider>
-        </div>
-        <div class="col-6 mt-3">
+    <div class="row">
+      <div class="col-6 mt-3">
+        <ValidationProvider
+            v-slot="{ passed, failed, errors }"
+            name="Nome cliente / Codice immobile"
+            rules="required"
+            mode="eager"
+        >
+          <base-input
+              required
+              type="text"
+              label="Nome cliente / Codice immobile"
+              placeholder="Nome cliente / Codice immobile"
+              :error="errors[0] || (apiErrors['name_or_code'] && apiErrors['name_or_code'][0])"
+              :class="[{ 'has-success': (passed && !apiErrors['name_or_code']) }, { 'has-danger': (failed || apiErrors['name_or_code']) }]"
+              :value="computation.name_or_code"
+              @input="$emit('setNameOrCode', $event)"
+          />
+        </ValidationProvider>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-6 mt-3">
+        <ValidationProvider v-slot="{ passed, failed, errors }" name="Cerca il nome della Via / Piazza" rules="required" mode="eager">
+          <base-select
+              required
+              :value="computation.street"
+              size="large"
+              label="Cerca il nome della Via / Piazza (almeno 2 lettere)"
+              :items="streets"
+              autocomplete="full_street_name"
+              item-name="full_street_name"
+              placeholder="Cerca il nome della Via / Piazza (almeno 2 lettere)"
+              :error="errors[0] || (apiErrors['street_id'] && apiErrors['street_id'][0])"
+              :class="[{ 'has-success': (passed && !apiErrors['street_id']) }, { 'has-danger': (failed || apiErrors['street_id']) }]"
+              filterable
+              @input="onStreetSelected($event)"
+          />
+        </ValidationProvider>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-6 mt-3">
+        <ValidationProvider v-slot="{ passed, failed, errors }" name="Seleziona i numeri civici di appartenenza" rules="required" mode="eager">
+          <base-select
+              :disabled="!computation.street"
+              required
+              :value="computation.street_number"
+              size="large"
+              label="Seleziona i numeri civici di appartenenza"
+              :items="streetNumbers"
+              autocomplete="full_number"
+              item-name="full_number"
+              placeholder="Seleziona i numeri civici di appartenenza"
+              :error="errors[0] || (apiErrors['street_number_id'] && apiErrors['street_number_id'][0])"
+              :class="[{ 'has-success': (passed && !apiErrors['street_number_id']) }, { 'has-danger': (failed || apiErrors['street_number_id']) }]"
+              @input="$emit('setStreetNumber', $event)"
+          />
+        </ValidationProvider>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-6 mt-3">
+        <ValidationProvider v-slot="{ passed, failed, errors }" name="Inserisci il numero civico" rules="required" mode="eager">
           <base-input
               type="text"
-              label="Interno"
-              placeholder="Interno"
-              :value="computation.apartment_number"
-              @input="$emit('setApartmentNumber', $event)"
+              label="Civico"
+              required
+              placeholder="Civico"
+              :value="computation.actual_street_number"
+              :error="errors[0] || (apiErrors['street_number_id'] && apiErrors['street_number_id'][0])"
+              :class="[{ 'has-success': (passed && !apiErrors['street_number_id']) }, { 'has-danger': (failed || apiErrors['street_number_id']) }]"
+              @input="$emit('setActualStreetNumber', $event)"
           />
-        </div>
-        <div class="col-6 mt-3">
-          <base-input
-              type="text"
-              label="Scala"
-              placeholder="Scala"
-              :value="computation.stair"
-              @input="$emit('setStair', $event)"
-          />
-        </div>
+        </ValidationProvider>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-6 mt-3">
+        <base-input
+            type="text"
+            label="Interno"
+            placeholder="Interno"
+            :value="computation.apartment_number"
+            @input="$emit('setApartmentNumber', $event)"
+        />
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-6 mt-3">
+        <base-input
+            type="text"
+            label="Scala"
+            placeholder="Scala"
+            :value="computation.stair"
+            @input="$emit('setStair', $event)"
+        />
+      </div>
     </div>
   </ValidationObserver>
 </template>
@@ -149,7 +157,7 @@ export default {
             }
         },
         validate() {
-            return true //this.computation.name_or_code && this.computation.street && this.computation.street_number && this.computation.actual_street_number
+            return this.computation.name_or_code && this.computation.street && this.computation.street_number && this.computation.actual_street_number
         }
     }
 }

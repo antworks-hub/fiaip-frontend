@@ -1,7 +1,7 @@
-import { mapActions, mapGetters } from 'vuex'
+import axios from 'axios'
 
 export default {
-     data() {
+    data() {
         return {
         }
     },
@@ -24,6 +24,25 @@ export default {
                 forniture_id: this.computation.forniture ? this.computation.forniture : [],
                 constraint_id: this.computation.constraint ? this.computation.constraint : [],
                 surface: this.computation.surface ? this.computation.surface : [],
+            }
+        }
+    },
+    methods: {
+        downloadComputationPdf(computation) {
+            let filename = 'Scheda_canone.pdf'
+            if(!this.isDownloading) {
+                this.isDownloading = true;
+                axios({
+                    url: '/computations/' + computation.id + '/download',
+                    method: 'GET',
+                    responseType: 'blob',
+                }).then((response) => {
+                    let link = document.createElement('a')
+                    link.href = window.URL.createObjectURL(new Blob([response.data]))
+                    link.setAttribute('download', filename);
+                    link.click()
+                    this.isDownloading = false
+                });
             }
         }
     }

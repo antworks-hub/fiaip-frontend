@@ -105,21 +105,21 @@ export default {
             default: () => {
                 return {
                     user: null,
-                    name_or_code: 'giorgio',
-                    area: 4,
-                    district: 23,
-                    location_range: 73,
-                    street: 3832,
-                    street_number: 6704,
+                    name_or_code: null,
+                    area: null,
+                    district: null,
+                    location_range: null,
+                    street: null,
+                    street_number: null,
                     zip_code: null,
-                    elements: [1, 2, 3],
-                    actual_street_number: '29',
-                    apartment_number: '5',
+                    elements: [],
+                    actual_street_number: null,
+                    apartment_number: null,
                     stair: null,
-                    contract_type: 5,
-                    forniture: 3,
-                    constraint: 3,
-                    surface: 150
+                    contract_type: null,
+                    forniture: null,
+                    constraint: null,
+                    surface: null
                 }
             }
         },
@@ -170,7 +170,7 @@ export default {
           } else {
             switch (String(this.activeTab)) {
               case "0":
-                return false //this.isStep1Valid || (this.$refs["step1"] && !this.$refs["step1"].validate())
+                return this.isStep1Valid || (this.$refs["step1"] && !this.$refs["step1"].validate())
               case "1":
                 return this.$refs["step2"] && !this.$refs["step2"].validate()
               case "2":

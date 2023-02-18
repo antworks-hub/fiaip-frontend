@@ -21,7 +21,6 @@ import FormWizard from './FormWizard.vue'
 import { mapActions, mapGetters } from 'vuex'
 import ComputationWizardMixin from '@/mixins/ComputationWizardMixin'
 import ComputationMixin from '@/mixins/ComputationMixin'
-import axios from 'axios'
 
 import swal from 'sweetalert2'
 
@@ -37,21 +36,21 @@ export default {
             computation: {
                 id: null,
                 user: null,
-                name_or_code: 'giorgio',
-                area: 4,
-                district: 23,
-                location_range: 73,
-                street: 3832,
-                street_number: 6704,
+                name_or_code: null,
+                area: null,
+                district: null,
+                location_range: null,
+                street: null,
+                street_number: null,
                 zip_code: null,
-                elements: [1, 2, 3],
-                actual_street_number: '29',
-                apartment_number: '5',
+                elements: [],
+                actual_street_number: null,
+                apartment_number: null,
                 stair: null,
-                contract_type: 5,
-                forniture: 3,
-                constraint: 3,
-                surface: 150
+                contract_type: null,
+                forniture: null,
+                constraint: null,
+                surface: null
             }
         }
     },
@@ -96,23 +95,6 @@ export default {
                     this.apiErrors = err.response.data.content
                 }
             })
-        },
-        downloadComputationPdf(computation) {
-          let filename = 'Scheda_canone.pdf'
-          if(!this.isDownloading) {
-            this.isDownloading = true;
-            axios({
-              url: '/computations/' + computation.id + '/download',
-              method: 'GET',
-              responseType: 'blob',
-            }).then((response) => {
-              let link = document.createElement('a')
-              link.href = window.URL.createObjectURL(new Blob([response.data]))
-              link.setAttribute('download', filename);
-              link.click()
-              this.isDownloading = false
-            });
-          }
         }
     }
 }
