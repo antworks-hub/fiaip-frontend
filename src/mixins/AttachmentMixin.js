@@ -34,6 +34,7 @@ export default {
     },
 
     handleFileUpload (file, path, prop, list = false, index = false, staticIndexes = false, edit = false) {
+
       this.uploadAttachment({ path, file }).then((res) => {
         const attachment = res.data.content.data
         if (file.label) {

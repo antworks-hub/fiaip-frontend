@@ -25,6 +25,7 @@ import BreadcrumbItem from './Breadcrumb/BreadcrumbItem.vue'
 import RouteBreadCrumb from './Breadcrumb/RouteBreadcrumb.vue'
 import ImageUpload from './ImageUpload'
 import FileUploadLine from './FileUploadLine'
+import FileUpload from './FileUpload'
 import ImageUploadLine from './ImageUploadLine'
 import MultipleFileUpload from './MultipleFileUpload'
 import MultipleImageUpload from './MultipleImageUpload'
@@ -75,6 +76,7 @@ export {
   BaseDropdown,
   ImageUpload,
   FileUploadLine,
+  FileUpload,
   ImageUploadLine,
   MultipleFileUpload,
   MultipleImageUpload,

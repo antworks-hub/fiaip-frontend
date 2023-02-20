@@ -21,6 +21,7 @@ import contractTypes from '@/store/modules/contractTypes'
 import fornitures from '@/store/modules/fornitures'
 import constraints from '@/store/modules/constraints'
 import computations from '@/store/modules/computations'
+import attachmentTypes from '@/store/modules/attachmentTypes'
 
 axios.defaults.baseURL = process.env.VUE_APP_API_BASE_URL
 Vue.use(Vuex)
@@ -45,7 +46,8 @@ const store = new Vuex.Store({
     contractTypes,
     fornitures,
     constraints,
-    computations
+    computations,
+    attachmentTypes
   }
 })
 
