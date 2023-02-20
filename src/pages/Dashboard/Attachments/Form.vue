@@ -42,8 +42,8 @@
           <div class="col-md-6">
             <file-upload
               style="flex: 1 1 auto;"
-              @change="onFileChange($event, '/product/document', value)"
-              @remove="onFileChange(false, '/product/document', value)"
+              @change="onFileChange($event, '/attachments', value)"
+              @remove="onFileChange(false, '/attachments', value)"
               :src="value.file"
               placeholder="Carica un allegato"
               select-text="Seleziona Allegato"

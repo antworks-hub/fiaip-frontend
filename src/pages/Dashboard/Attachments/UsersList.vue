@@ -3,7 +3,7 @@
     <div class="col-12">
       <card>
         <page-header
-          title="ALLEGATI"
+          title="ALLEGATI - DA FARE LA GESTIONE LATO UTENTE (SOLO VISUALIZZAZIONE)"
           @backClick="$router.back()"
         />
 

@@ -20,11 +20,10 @@ export default {
     }),
 
     onFileChange (evt, path, prop, list = false, staticIndexes = false) {
-      const file = evt ? evt.$event : false
-      const index = evt ? evt.index : false
+      const file = evt ? evt : false
       if (file) {
-        const edit = (index || index === 0) && list ? index < (list.length - 1) : false
-        this.handleFileUpload(file, path, prop, list, index, staticIndexes, edit)
+        //const edit = (index || index === 0) && list ? index < (list.length - 1) : false
+        this.handleFileUpload(file, path, prop)
       }
     },
 
@@ -34,7 +33,6 @@ export default {
     },
 
     handleFileUpload (file, path, prop, list = false, index = false, staticIndexes = false, edit = false) {
-
       this.uploadAttachment({ path, file }).then((res) => {
         const attachment = res.data.content.data
         if (file.label) {
