@@ -6,7 +6,7 @@ import dashboardPages from './dashboard.routes'
 const routes = [
   {
     path: '/',
-    redirect: '/riepilogo',
+    redirect: '/calcoli',
     name: 'Home'
   },
   authPages,

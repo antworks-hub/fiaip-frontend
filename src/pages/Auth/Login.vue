@@ -118,7 +118,7 @@ export default {
     }),
     submit () {
       this.login(this.formData).then((res) => {
-        this.$router.push({ name: 'Orders' })
+        this.$router.push({ name: 'Elenco Calcoli' })
       }).catch((err) => {
         if (err.response.status === 422 || err.response.status === 401) {
           this.apiErrors = [err.response.data.message]

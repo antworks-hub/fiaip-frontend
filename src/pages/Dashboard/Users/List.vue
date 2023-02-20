@@ -19,6 +19,7 @@
           @onNew="$router.push('utenti/nuovo')"
           @onEdit="$router.push(`utenti/${$event.id}/modifica`)"
           @onDelete="handleDelete($event.id)"
+          :showable="false"
         />
       </card>
     </div>
@@ -56,25 +57,21 @@ export default {
           prop: 'first_name',
           label: 'Nome',
           sortable: true,
-          minWidth: 200
         },
         {
           prop: 'last_name',
           label: 'Cognome',
           sortable: true,
-          minWidth: 200
         },
         {
           prop: 'email',
           label: 'Email',
           sortable: true,
-          minWidth: 250
         },
         {
           prop: 'user_level.level',
           label: 'Livello',
           sortable: true,
-          minWidth: 250
         }
       ]
     }

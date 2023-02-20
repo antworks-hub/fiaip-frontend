@@ -10,14 +10,6 @@
     >
       <template slot="links">
         <div>
-          <sidebar-item
-            :link="{
-              name: $t('sidebar.dashboard'),
-              iconFamily: 'mdi',
-              icon: 'note-text',
-              path: '/riepilogo'
-            }"
-          />
 
           <sidebar-item
               :link="{

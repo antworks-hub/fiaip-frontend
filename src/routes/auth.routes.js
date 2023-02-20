@@ -18,7 +18,7 @@ const authPages = {
   beforeEnter: (to, from, next) => {
     const user = secureStorage.getItem('user')
     if (user) {
-      next('/dashboard')
+      next('/calcoli')
     }
     next()
   },

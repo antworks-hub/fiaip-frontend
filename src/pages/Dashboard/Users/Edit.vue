@@ -11,6 +11,7 @@
           :value="user"
           :api-errors="apiErrors"
           :is-loading="isLoading"
+          :userLevels="userLevels"
           @submit="handleSubmit"
           @delete="handleDelete"
           @input="updateValue($event)"
@@ -36,17 +37,20 @@ export default {
 
   computed: {
     ...mapGetters({
-      user: 'users/single'
+      user: 'users/single',
+      userLevels: 'userLevels/items'
     })
   },
 
   created () {
     this.userId = this.$route.params.id
-    this.getUser(this.userId)
+    this.getUser(this.userId),
+    this.fetchUserLevels()
   },
 
   beforeDestroy () {
-    this.clearUser()
+    this.clearUser(),
+    this.clearUserLevels()
   },
 
   methods: {
@@ -56,7 +60,9 @@ export default {
       deleteUser: 'users/delete',
       reloadUser: 'auth/reload',
       clearUser: 'users/resetSingle',
-      updateValue: 'users/updateValue'
+      updateValue: 'users/updateValue',
+      fetchUserLevels: 'userLevels/fetch',
+      clearUserLevels: 'userLevels/resetSingle'
     }),
     handleSubmit () {
       this.isLoading = true

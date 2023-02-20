@@ -60,6 +60,108 @@
               />
             </ValidationProvider>
           </div>
+          <div class="col-md-6">
+            <ValidationProvider
+              v-slot="{ passed, failed, errors }"
+              name="address"
+              mode="eager"
+            >
+              <base-input
+                :value="value.address"
+                type="text"
+                label="Indirizzo"
+                placeholder="Indirizzo"
+                :error="errors[0] || (apiErrors['address'] && apiErrors['address'][0])"
+                :class="[{ 'has-success': (passed && !apiErrors['address']) }, { 'has-danger': (failed || apiErrors['address']) }]"
+                @input="updateValue('address', $event)"
+              />
+            </ValidationProvider>
+          </div>
+          <div class="col-md-6">
+            <ValidationProvider
+              v-slot="{ passed, failed, errors }"
+              name="agency_name"
+              mode="eager"
+            >
+              <base-input
+                :value="value.agency_name"
+                type="text"
+                label="Nome agenzia"
+                placeholder="Nome agenzia"
+                :error="errors[0] || (apiErrors['agency_name'] && apiErrors['agency_name'][0])"
+                :class="[{ 'has-success': (passed && !apiErrors['agency_name']) }, { 'has-danger': (failed || apiErrors['agency_name']) }]"
+                @input="updateValue('agency_name', $event)"
+              />
+            </ValidationProvider>
+          </div>
+          <div class="col-md-6">
+            <ValidationProvider
+              v-slot="{ passed, failed, errors }"
+              name="email_pec"
+              mode="eager"
+            >
+              <base-input
+                :value="value.email_pec"
+                type="text"
+                label="PEC"
+                placeholder="PEC"
+                :error="errors[0] || (apiErrors['email_pec'] && apiErrors['email_pec'][0])"
+                :class="[{ 'has-success': (passed && !apiErrors['email_pec']) }, { 'has-danger': (failed || apiErrors['email_pec']) }]"
+                @input="updateValue('email_pec', $event)"
+              />
+            </ValidationProvider>
+          </div>
+          <div class="col-md-6">
+            <ValidationProvider
+              v-slot="{ passed, failed, errors }"
+              name="phone_number"
+              mode="eager"
+            >
+              <base-input
+                :value="value.phone_number"
+                type="text"
+                label="Telefono"
+                placeholder="Telefono"
+                :error="errors[0] || (apiErrors['phone_number'] && apiErrors['phone_number'][0])"
+                :class="[{ 'has-success': (passed && !apiErrors['phone_number']) }, { 'has-danger': (failed || apiErrors['phone_number']) }]"
+                @input="updateValue('phone_number', $event)"
+              />
+            </ValidationProvider>
+          </div>
+          <div class="col-md-6">
+            <ValidationProvider
+              v-slot="{ passed, failed, errors }"
+              name="member_code"
+              mode="eager"
+            >
+              <base-input
+                :value="value.member_code"
+                type="text"
+                label="Codice associato"
+                placeholder="Codice associato"
+                :error="errors[0] || (apiErrors['member_code'] && apiErrors['member_code'][0])"
+                :class="[{ 'has-success': (passed && !apiErrors['member_code']) }, { 'has-danger': (failed || apiErrors['member_code']) }]"
+                @input="updateValue('member_code', $event)"
+              />
+            </ValidationProvider>
+          </div>
+          <div class="col-md-6">
+            <ValidationProvider v-slot="{ passed, failed, errors }" name="livello utente" rules="required" mode="eager">
+              <base-select
+                required
+                :value="value.user_level_id"
+                size="large"
+                label="Seleziona il livello utente"
+                :items="userLevels"
+                autocomplete="level"
+                item-name="level"
+                placeholder="Seleziona il livello utente"
+                :error="errors[0] || (apiErrors['user_level_id'] && apiErrors['user_level_id'][0])"
+                :class="[{ 'has-success': (passed && !apiErrors['user_level_id']) }, { 'has-danger': (failed || apiErrors['user_level_id']) }]"
+                @input="updateValue('user_level_id', $event)"
+              />
+            </ValidationProvider>
+          </div>
         </div>
 
         <div v-if="isEdit" class="row">
@@ -70,7 +172,7 @@
           </div>
         </div>
 
-        <div v-if="changePassword && isEdit" class="row">
+        <div v-if="(changePassword && isEdit) || !isEdit" class="row">
           <div class="col-md-6">
             <ValidationProvider
               v-slot="{ passed, failed, errors }"
@@ -110,6 +212,20 @@
                 :class="[{ 'has-success': (passed && !apiErrors['password_confirmation']) }, { 'has-danger': (failed || apiErrors['password_confirmation']) }]"
                 @input="updateValue('password_confirmation', $event)"
               />
+            </ValidationProvider>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-md-6">
+            <ValidationProvider v-slot="{ passed, failed, errors }" name="utente attivo" rules="required" mode="eager">
+              <base-checkbox
+                required
+                :checked="value.active"
+                :error="errors[0] || (apiErrors['active'] && apiErrors['active'][0])"
+                :class="[{ 'has-success': (passed && !apiErrors['active']) }, { 'has-danger': (failed || apiErrors['active']) }]"
+                @input="updateValue('active', $event)"
+              >Utente Attivo
+              </base-checkbox>
             </ValidationProvider>
           </div>
         </div>
@@ -159,11 +275,18 @@ export default {
       type: Object,
       default: () => {
         return {
-          name: '',
           email: '',
-          password: null,
-          password_confirmation: null,
-          active: true
+          first_name: '',
+          last_name: '',
+          password: '',
+          password_confirmation: '',
+          active: false,
+          user_level_id: '',
+          address: '',
+          agency_name: '',
+          email_pec: '',
+          phone_number: '',
+          member_code: ''
         }
       }
     },
@@ -176,7 +299,8 @@ export default {
       default: () => {
         return {}
       }
-    }
+    },
+    userLevels: []
   },
   data () {
     return {
@@ -215,7 +339,7 @@ export default {
     handleDelete () {
       swal.fire({
         title: 'Sei sicuro?',
-        text: `L'eliminazione di "${this.value.last_name}" sarà irreversibile.`,
+        text: `L'eliminazione di "${this.value.first_name} ${this.value.last_name}" sarà irreversibile.`,
         showCancelButton: true,
         customClass: {
           confirmButton: 'btn btn-success btn-fill',

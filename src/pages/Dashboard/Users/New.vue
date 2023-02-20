@@ -11,6 +11,7 @@
           v-model="user"
           :api-errors="apiErrors"
           :is-loading="isLoading"
+          :userLevels="userLevels"
           @submit="handleSubmit"
           @clearErrors="apiErrors = {}"
         />
@@ -33,16 +34,38 @@ export default {
         last_name: '',
         password: '',
         password_confirmation: '',
-        active: true
+        active: false,
+        user_level_id: '',
+        address: '',
+        agency_name: '',
+        email_pec: '',
+        phone_number: '',
+        member_code: ''
       },
       isLoading: false,
       apiErrors: {}
     }
   },
 
+  created() {
+    this.fetchUserLevels()
+  },
+
+  beforeDestroy() {
+    this.clearUserLevels()
+  },
+
+  computed: {
+    ...mapGetters({
+      userLevels: 'userLevels/items'
+    })
+  },
+
   methods: {
     ...mapActions({
-      createUser: 'users/create'
+      createUser: 'users/create',
+      fetchUserLevels: 'userLevels/fetch',
+      clearUserLevels: 'userLevels/resetSingle'
     }),
     handleSubmit () {
       this.isLoading = true

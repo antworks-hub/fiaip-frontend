@@ -2,7 +2,7 @@
   <div class="row">
     <div class="col-12">
       <card>
-        <page-header title="CALCOLI LOCAZIONEEE" :query="query" @backClick="$router.back()" />
+        <page-header title="CALCOLI LOCAZIONE" :query="query" @backClick="$router.back()" />
         <list-table v-model="query" :pagination="pagination" :columns="computedColumns" :items="computations" :meta="meta"
           :search-fields="searchFields" name-prop="name_or_code" hide-default-search :deletable="false"
           :editable="false" :creable="true"
@@ -69,7 +69,7 @@ export default {
           sortable: true
         },
         {
-          prop: 'user.last_name',
+          prop: 'user.full_name',
           label: 'Agente',
           sortable: true,
           admin: true
@@ -103,7 +103,7 @@ export default {
       meta: 'computations/meta'
     }),
     computedColumns() {
-      if(this.user.admin) {
+      if(this.user.user_level_id == 1) {
         return this.tableColumns
       }
       return this.tableColumns.filter(col => !col.admin)

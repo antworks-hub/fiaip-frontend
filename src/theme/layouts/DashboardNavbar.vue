@@ -42,7 +42,7 @@
           slot="title"
         >
           <div class="navbar-name">
-            {{ `${user.business_name}` }}
+            {{ `${user.first_name} ${user.last_name}` }}
             <!-- <mdicon name="account" /> -->
             <!-- <img src="img/mike.jpg" /> -->
           </div>
