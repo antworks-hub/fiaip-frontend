@@ -1,29 +1,15 @@
 <template>
   <div class="row">
     <div class="col">
-      <div class="row">
-        <div :class="srcFileUrl ? 'col-md-6' : 'col'">
-          <base-input
-            v-model="fileUrl"
-            type="text"
-            style="flex:1; margin-right: 5px;"
-            :label="label"
-            :placeholder="placeholder"
-            :readonly="isReadonly"
-          >
-          </base-input>
-        </div>
-        <div v-if="fileExists" class="col-md-6">
-          <base-input
-            v-model="fileLabel"
-            type="text"
-            style="flex:1; margin-right: 5px;"
-            label="Nome File"
-            placeholder="Nome File"
-          >
-          </base-input>
-        </div>
-      </div>
+      <base-input
+        v-model="fileLabel"
+        type="text"
+        style="flex:1; margin-right: 5px;"
+        :label="label"
+        :placeholder="placeholder"
+        readonly
+      >
+      </base-input>
     </div>
     <div class="col-lg-auto d-flex align-items-end justify-content-end">
       <span class="btn btn-primary btn-simple btn-file" style="max-height:40px; margin-bottom: 10px; margin-left: 5px;">
@@ -45,7 +31,7 @@
       <base-button v-if="fileExists" @click="openPreview" round type="success" style="max-height:40px; max-width:110px; margin-bottom: 10px">
         <i class="fas fa-eye"></i> {{ previewText }}
       </base-button>
-      <base-button v-if="fileExists" @click="removeFile" round type="danger" style="max-height:40px; max-width:110px; margin-bottom: 10px">
+      <base-button v-if="fileExists && removable" @click="removeFile" round type="danger" style="max-height:40px; max-width:110px; margin-bottom: 10px">
         <i class="fas fa-times"></i> {{ removeText }}
       </base-button>
     </div>
@@ -55,9 +41,7 @@
 export default {
   name: 'file-upload',
   props: {
-    src: {
-      type: Object,
-    },
+    src: null,
     selectText: {
       type: String,
       default: 'Select file'
@@ -81,7 +65,11 @@ export default {
     previewText: {
       type: String,
       default: 'Preview'
-    }
+    },
+    removable: {
+      type: Boolean,
+      default: true
+    },
   },
   data() {
     return {
@@ -113,23 +101,20 @@ export default {
     },
     fileExists() {
       return ((this.src && this.src.url) && this.src.url !== null) || this.filePreview !== null;
-    },
-    isReadonly() {
-      return ((this.src && this.src.url) && this.src.url !== null) || this.filePreview !== null
-    },
+    }
   },
   methods: {
     handlePreview(event) {
       let file = event.target.files[0];
       this.filePreview = URL.createObjectURL(file);
-      this.fileUrl = file.name;
+      this.fileLabel = file.name;
       this.$emit('change', file);
     },
     openPreview() {
       if(this.filePreview) {
         window.open(this.filePreview);
       } else if(this.fileUrl) {
-        if(!this.fileUrl.includes('http://')) {
+        if(!(this.fileUrl.includes('http://') || this.fileUrl.includes('https://'))) {
           window.open('https://' + this.fileUrl);
         } else {
           window.open(this.fileUrl);

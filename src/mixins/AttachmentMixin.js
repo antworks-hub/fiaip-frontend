@@ -33,23 +33,9 @@ export default {
     },
 
     handleFileUpload (file, path, prop, list = false, index = false, staticIndexes = false, edit = false) {
-      this.uploadAttachment({ path, file }).then((res) => {
-        const attachment = res.data.content.data
-        if (file.label) {
-          attachment.label = file.label
-        }
-        this.loaded_attachment_ids.push(attachment.id)
-        if (list && (index || index === 0)) {
-          const clonedList = [...list]
-          clonedList[index] = attachment
-          if (!staticIndexes && !edit) {
-            clonedList.push({})
-          }
-          this.updateValue(prop, clonedList)
-        } else {
-          this.updateValue(prop, attachment)
-        }
-      })
+      const attachment = prop;
+      attachment.file = file;
+      this.updateValue(prop, attachment);
     },
 
     handleFileCancellation (prop, list = false, index = false, keepIndex = false, label = false) {

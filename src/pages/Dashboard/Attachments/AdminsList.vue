@@ -16,8 +16,8 @@
           :meta="meta"
           name-prop="name"
           new-button-label="NUOVO ALLEGATO"
-          @onNew="$router.push('allegati/nuovo')"
-          @onEdit="$router.push(`allegati/${$event.id}/modifica`)"
+          @onNew="$router.push('gestione-allegati/nuovo')"
+          @onEdit="$router.push(`gestione-allegati/${$event.id}/modifica`)"
           @onDelete="handleDelete($event.id)"
           :showable="false"
         />
@@ -58,7 +58,7 @@ export default {
           sortable: true,
         },
         {
-          prop: 'type_test',
+          prop: 'attachment_type.type',
           label: 'Tipo',
           sortable: true,
         }

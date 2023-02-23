@@ -1,5 +1,5 @@
 <template>
-  <card v-if="value">
+  <card v-if="attachment">
     <ValidationObserver ref="form">
       <form @submit.prevent="submit" enctype="multipart/form-data">
         <div class="row">
@@ -11,7 +11,7 @@
               mode="eager"
             >
               <base-input
-                :value="value.name"
+                v-model="attachment.name"
                 required
                 type="text"
                 label="Nome"
@@ -26,7 +26,7 @@
             <ValidationProvider v-slot="{ passed, failed, errors }" name="tipo allegato" rules="required" mode="eager">
               <base-select
                 required
-                :value="value.attachment_type_id"
+                v-model="attachment.attachment_type_id"
                 size="large"
                 label="Seleziona il tipo di allegato"
                 :items="attachmentTypes"
@@ -42,13 +42,15 @@
           <div class="col-md-6">
             <file-upload
               style="flex: 1 1 auto;"
-              @change="onFileChange($event, '/attachments', value)"
-              @remove="onFileChange(false, '/attachments', value)"
-              :src="value.file"
+              @change="onFileChange($event, '/attachments', attachment)"
+              @remove="onFileChange(false, '/attachments', attachment)"
+              :src="attachment.file"
               placeholder="Carica un allegato"
               select-text="Seleziona Allegato"
               change-text="Cambia"
               remove-text="Rimuovi"
+              label="Nome file"
+              :removable="false"
             ></file-upload>
           </div>
         </div>
@@ -92,7 +94,7 @@ export default {
     AttachmentMixin
   ],
   props: {
-    value: {
+    attachment: {
       type: Object,
       default: () => {
         return {
@@ -127,7 +129,7 @@ export default {
   },
   computed: {
     isEdit () {
-      return this.value.id != null
+      return this.attachment.id != null
     }
   },
   watch: {
@@ -157,7 +159,7 @@ export default {
     handleDelete () {
       swal.fire({
         title: 'Sei sicuro?',
-        text: `L'eliminazione di "${this.value.first_name} ${this.value.last_name}" sarà irreversibile.`,
+        text: `L'eliminazione di "${this.attachment.name}" sarà irreversibile.`,
         showCancelButton: true,
         customClass: {
           confirmButton: 'btn btn-success btn-fill',

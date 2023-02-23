@@ -8,7 +8,7 @@
           @backClick="$router.back()"
         />
         <attachment-form
-          v-model="attachment"
+          :attachment="attachment"
           :api-errors="apiErrors"
           :is-loading="isLoading"
           :attachmentTypes="attachmentTypes"
@@ -55,12 +55,12 @@ export default {
 
   methods: {
     ...mapActions({
-      createAttachment: 'attachments/create',
+      uploadAttachment: 'attachments/upload',
       fetchAttachmentTypes: 'attachmentTypes/fetch'
     }),
     handleSubmit () {
       this.isLoading = true
-      this.createAttachment({ payload: this.attachment }).then((res) => {
+      this.uploadAttachment({ payload: this.attachment, path: '' }).then((res) => {
         this.isLoading = false
         this.$notify({
           message:
@@ -71,7 +71,7 @@ export default {
           verticalAlign: 'top',
           type: 'success'
         })
-        this.$router.push('/allegati')
+        this.$router.push('/gestione-allegati')
       }).catch((err) => {
         this.isLoading = false
         if (err.response.status === 422) {

@@ -3,11 +3,14 @@
     <div class="col-12">
       <card>
         <page-header
-          title="ALLEGATI - DA FARE LA GESTIONE LATO UTENTE (SOLO VISUALIZZAZIONE)"
+          title="ALLEGATI"
           @backClick="$router.back()"
         />
 
         <list-table
+          :creable="false"
+          :editable="false"
+          :deletable="false"
           v-model="query"
           :pagination="pagination"
           :columns="tableColumns"
@@ -16,10 +19,7 @@
           :meta="meta"
           name-prop="name"
           new-button-label="NUOVO ALLEGATO"
-          @onNew="$router.push('allegati/nuovo')"
-          @onEdit="$router.push(`allegati/${$event.id}/modifica`)"
-          @onDelete="handleDelete($event.id)"
-          :showable="false"
+          @onShow="openPreview"
         />
       </card>
     </div>
@@ -58,7 +58,7 @@ export default {
           sortable: true,
         },
         {
-          prop: 'type_test',
+          prop: 'attachment_type.type',
           label: 'Tipo',
           sortable: true,
         }
@@ -124,7 +124,16 @@ export default {
           type: 'success'
         })
       })
-    }
+    },
+    openPreview(row) {
+      if(row.file.url) {
+        if(!(row.file.url.includes('http://') || row.file.url.includes('https://'))) {
+          window.open('https://' + row.file.url);
+        } else {
+          window.open(row.file.url);
+        }
+      }
+    },
   }
 }
 </script>

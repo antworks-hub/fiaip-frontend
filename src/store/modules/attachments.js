@@ -11,9 +11,9 @@ const getters = {
 const actions = {
   ...crud.actions,
 
-    async upload(context, {path, file}) {
+    async upload(context, {payload, path}) {
       var headers = {'Content-Type': 'multipart/form-data'}
-      var formData = generateFormData(file, 'POST');
+      var formData = generateFormData(payload, 'POST');
 
       return new Promise((resolve, reject) => {
         axios({
@@ -33,8 +33,7 @@ const actions = {
       return new Promise((resolve, reject) => {
         axios({
           method: 'DELETE',
-          url: context.state.endpoint,
-          data: payload,
+          url: `${context.state.endpoint}/${payload}`,
           headers: {'Content-Type': 'application/json'}
         }).then(response => {
           resolve(response);
@@ -48,10 +47,11 @@ const mutations = {
   ...crud.mutations
 }
 
-function generateFormData(file, method) {
+function generateFormData(payload, method) {
   let formData = new FormData();
-  formData.append('_method', method)
-  formData.append('file', file);
+  formData.append('file', payload.file);
+  formData.append('name', payload.name);
+  formData.append('type', payload.attachment_type_id);
   return formData;
 }
 

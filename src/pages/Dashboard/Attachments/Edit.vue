@@ -3,19 +3,18 @@
     <div class="col-12">
       <card>
         <page-header
-          title="MODIFICA UTENTE"
+          title="MODIFICA ALLEGATO"
           :loading="isLoading"
           @backClick="$router.back()"
         />
-        <user-form
-          :value="user"
-          :api-errors="apiErrors"
-          :is-loading="isLoading"
-          :userLevels="userLevels"
-          @submit="handleSubmit"
-          @delete="handleDelete"
-          @input="updateValue($event)"
-          @clearErrors="apiErrors = {}"
+        <attachment-form
+            :attachment="attachment"
+            :api-errors="apiErrors"
+            :is-loading="isLoading"
+            :attachmentTypes="attachmentTypes"
+            @submit="handleSubmit"
+            @clearErrors="apiErrors = {}"
+            @delete="handleDelete"
         />
       </card>
     </div>
@@ -23,62 +22,62 @@
 </template>
 <script>
 import { mapGetters, mapActions } from 'vuex'
-import UserForm from './Form.vue'
+import AttachmentForm from "./Form.vue";
 
 export default {
-  components: { UserForm },
+  components: { AttachmentForm },
   data () {
     return {
-      userId: null,
+      attachmentId: null,
       isLoading: false,
       apiErrors: {}
     }
   },
 
-  computed: {
-    ...mapGetters({
-      user: 'users/single',
-      userLevels: 'userLevels/items'
-    })
-  },
-
   created () {
-    this.userId = this.$route.params.id
-    this.getUser(this.userId),
-    this.fetchUserLevels()
+    this.attachmentId = this.$route.params.id
+    this.getAttachment(this.attachmentId),
+    this.fetchAttachmentTypes()
   },
 
   beforeDestroy () {
-    this.clearUser(),
-    this.clearUserLevels()
+    this.clearAttachment(),
+    this.clearAttachmentTypes()
+  },
+
+  computed: {
+    ...mapGetters({
+      attachment: 'attachments/single',
+      attachmentTypes: 'attachmentTypes/items'
+    })
   },
 
   methods: {
     ...mapActions({
-      getUser: 'users/get',
-      updateUser: 'users/update',
-      deleteUser: 'users/delete',
-      reloadUser: 'auth/reload',
-      clearUser: 'users/resetSingle',
-      updateValue: 'users/updateValue',
-      fetchUserLevels: 'userLevels/fetch',
-      clearUserLevels: 'userLevels/resetSingle'
+      getAttachment: 'attachments/get',
+      uploadAttachment: 'attachments/upload',
+      deleteAttachment: 'attachments/delete',
+      reloadAttachment: 'attachments/reload',
+      clearAttachment: 'attachments/resetSingle',
+      updateValue: 'attachments/updateValue',
+      fetchAttachmentTypes: 'attachmentTypes/fetch',
+      clearAttachmentTypes: 'attachmentTypes/resetSingle'
     }),
     handleSubmit () {
       this.isLoading = true
-      this.updateUser({ id: this.userId, payload: this.user }).then((res) => {
+      this.uploadAttachment({ payload: this.attachment, path: `/${this.attachmentId}` }).then((res) => {
         this.$notify({
           message:
-            'Utente aggiornato con successo.',
+            'Allegato aggiornato con successo.',
           timeout: 5000,
           icon: '',
           horizontalAlign: 'right',
           verticalAlign: 'top',
           type: 'success'
         })
-        this.reloadUser().then((res) => {
+        this.reloadAttachment().then((res) => {
           this.isLoading = false
-          this.$router.push('/utenti')
+          this.$router.push('/gestione-allegati')
         })
       }).catch((err) => {
         this.isLoading = false
@@ -89,18 +88,18 @@ export default {
     },
     handleDelete () {
       this.isLoading = true
-      this.deleteUser(this.userId).then((res) => {
+      this.deleteAttachment(this.attachmentId).then((res) => {
         this.isLoading = false
         this.$notify({
           message:
-            'Utente eliminato con successo.',
+            'Allegato eliminato con successo.',
           timeout: 5000,
           icon: '',
           horizontalAlign: 'right',
           verticalAlign: 'top',
           type: 'success'
         })
-        this.$router.push('/utenti')
+        this.$router.push('/gestione-allegati')
       })
     }
   }

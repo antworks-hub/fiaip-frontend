@@ -21,13 +21,13 @@ export default [
     components: { default: ListAttachments }
   },
   {
-    path: '/allegati/nuovo',
+    path: '/gestione-allegati/nuovo',
     name: 'Nuovo Allegato',
     meta: { needsAdmin: true },
     components: { default: NewAttachment }
   },
   {
-    path: '/allegati/:id/modifica',
+    path: '/gestione-allegati/:id/modifica',
     name: 'Modifica Allegato',
     meta: { needsAdmin: true },
     components: { default: EditAttachment }
