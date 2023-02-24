@@ -6,33 +6,47 @@
           title="ALLEGATI"
           @backClick="$router.back()"
         />
-
-        <list-table
-          :creable="false"
-          :editable="false"
-          :deletable="false"
-          v-model="query"
-          :pagination="pagination"
-          :columns="tableColumns"
-          :items="attachments"
-          :search-fields="searchFields"
-          :meta="meta"
-          name-prop="name"
-          new-button-label="NUOVO ALLEGATO"
-          @onShow="openPreview"
-        />
+        <div class="mb-3 d-flex justify-content-start" :class="[ creable ? 'col-8' : 'col-12' ]">
+          <base-input
+            v-model="query.filter.custom_search"
+            type="text"
+            class="mr-3"
+            placeholder="Cerca"
+          />
+        </div>
+        <tabs type="primary">
+          <tab-pane v-for="(attachmentType, index) in attachmentTypes" :key="index" :label="attachmentType.type">
+            <list-table
+                :creable="false"
+                :editable="false"
+                :deletable="false"
+                :hideDefaultSearch="true"
+                v-model="query"
+                :pagination="pagination"
+                :columns="tableColumns"
+                :items="filterAttachmentByTipe(attachmentType.id)"
+                :search-fields="searchFields"
+                :meta="meta"
+                name-prop="name"
+                new-button-label="NUOVO ALLEGATO"
+                @onShow="openPreview"
+            />
+          </tab-pane>
+        </tabs>
       </card>
     </div>
   </div>
 </template>
 <script>
 import { mapGetters, mapActions } from 'vuex'
-import { ListTable } from '@/theme/components/index'
+import { Tabs, TabPane, ListTable } from '@/theme/components/index'
 import secureStorage from '@/utils/secureStorage'
 
 export default {
   components: {
-    ListTable
+    ListTable,
+    Tabs,
+    TabPane
   },
 
   data () {
@@ -69,6 +83,7 @@ export default {
   computed: {
     ...mapGetters({
       attachments: 'attachments/items',
+      attachmentTypes: 'attachmentTypes/items',
       meta: 'attachments/meta'
     })
   },
@@ -89,6 +104,7 @@ export default {
   },
 
   created () {
+    this.fetchAttachmentTypes()
     const storedQuery = JSON.parse(secureStorage.getItem('tableQuery'))
     if (storedQuery && storedQuery.entity === 'attachments') {
       this.query = storedQuery.query
@@ -104,6 +120,7 @@ export default {
   methods: {
     ...mapActions({
       fetchAttachments: 'attachments/fetch',
+      fetchAttachmentTypes: 'attachmentTypes/fetch',
       deleteAttachment: 'attachments/delete',
       clearAttachments: 'attachments/resetItems'
     }),
@@ -134,6 +151,11 @@ export default {
         }
       }
     },
+    filterAttachmentByTipe(type) {
+      return this.attachments.filter((attachment) => {
+        return attachment.attachment_type_id == type
+      })
+    }
   }
 }
 </script>
