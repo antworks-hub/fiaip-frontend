@@ -92,8 +92,8 @@
       </slot>
     </div>
     <div class="col-12" :class="selectable ? 'table-selectable' : null">
-      <el-table :data="items" 
-        @sort-change="handleSort" 
+      <el-table :data="items"
+        @sort-change="handleSort"
         @row-click="$emit('rowSelected', $event)"
         :row-class-name="tableRowClassName"
       >
@@ -103,6 +103,7 @@
           :min-width="column.minWidth"
           :max-width="column.maxWidth"
           :prop="column.prop"
+          :formatter="column.formatter"
           :label="column.label"
           :sortable="column.sortable ? 'custom' : false"
         >
@@ -183,7 +184,7 @@
               </base-button>
             </el-tooltip>
             <el-tooltip
-              v-if="editable"
+              v-if="editable && !props.row.uneditable"
               content="Modifica"
               :effect="darkMode ? 'light' : 'dark'"
               :open-delay="300"

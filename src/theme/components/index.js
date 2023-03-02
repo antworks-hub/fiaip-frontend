@@ -54,6 +54,8 @@ import CustomVideoPlayer from './CustomVideoPlayer'
 
 import PageHeader from './Headers/PageHeader'
 
+import BaseText from "./Inputs/BaseText.vue";
+
 export {
   BaseCheckbox,
   IconCheckbox,
@@ -101,5 +103,6 @@ export {
   LoadingPanel,
   AsyncWorldMap,
   CustomVideoPlayer,
-  PageHeader
+  PageHeader,
+  BaseText
 }

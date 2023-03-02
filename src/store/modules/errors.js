@@ -5,7 +5,9 @@ const state = () => ({
   ...crud.state
 })
 const getters = {
-  ...crud.getters
+  ...crud.getters,
+
+
 }
 const actions = {
   ...crud.actions
