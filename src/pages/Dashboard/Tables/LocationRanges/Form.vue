@@ -50,7 +50,7 @@
             <ValidationProvider
                 v-slot="{ passed, failed, errors }"
                 name="area_id"
-                rules="required"
+                rules="required|integer"
                 mode="eager"
             >
               <base-select
@@ -74,7 +74,7 @@
             <ValidationProvider
                 v-slot="{ passed, failed, errors }"
                 name="district_id"
-                rules="required"
+                rules="required|integer"
                 mode="eager"
             >
               <base-select

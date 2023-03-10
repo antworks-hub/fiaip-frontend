@@ -7,12 +7,10 @@
             <ValidationProvider
               v-slot="{ passed, failed, errors }"
               name="number_from"
-              rules="required"
               mode="eager"
             >
               <base-input
                 :value="value.number_from"
-                required
                 type="text"
                 label="Numero Da"
                 placeholder="Numero Da"
@@ -28,12 +26,10 @@
             <ValidationProvider
               v-slot="{ passed, failed, errors }"
               name="number_to"
-              rules="required"
               mode="eager"
             >
               <base-input
                 :value="value.number_to"
-                required
                 type="text"
                 label="Numero A"
                 placeholder="Numero A"
@@ -50,12 +46,10 @@
             <ValidationProvider
               v-slot="{ passed, failed, errors }"
               name="number_type"
-              rules="required"
               mode="eager"
             >
               <base-input
                 :value="value.number_type"
-                required
                 type="text"
                 label="Tipo Numero"
                 placeholder="Tipo Numero"
@@ -72,7 +66,7 @@
             <ValidationProvider
                 v-slot="{ passed, failed, errors }"
                 name="street_id"
-                rules="required"
+                rules="required|integer"
                 mode="eager"
             >
               <base-select
@@ -96,7 +90,7 @@
             <ValidationProvider
                 v-slot="{ passed, failed, errors }"
                 name="area_id"
-                rules="required"
+                rules="required|integer"
                 mode="eager"
             >
               <base-select
@@ -120,11 +114,10 @@
             <ValidationProvider
                 v-slot="{ passed, failed, errors }"
                 name="district_id"
-                rules="required"
+                rules="integer"
                 mode="eager"
             >
               <base-select
-                  required
                   :value="value.district_id"
                   size="large"
                   label="Seleziona la Circoscrizione"

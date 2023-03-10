@@ -28,12 +28,10 @@
             <ValidationProvider
               v-slot="{ passed, failed, errors }"
               name="numbers"
-              rules="required"
               mode="eager"
             >
               <base-input
                 :value="value.numbers"
-                required
                 type="text"
                 label="Numeri"
                 placeholder="Numeri"
@@ -49,7 +47,7 @@
             <ValidationProvider
               v-slot="{ passed, failed, errors }"
               name="street_id"
-              rules="required"
+              rules="required|integer"
               mode="eager"
             >
               <base-select

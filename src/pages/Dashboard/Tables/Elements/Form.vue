@@ -28,7 +28,6 @@
             <ValidationProvider
               v-slot="{ passed, failed, errors }"
               name="base_flag"
-              rules="required"
               mode="eager"
             >
               <base-checkbox
@@ -47,7 +46,6 @@
             <ValidationProvider
               v-slot="{ passed, failed, errors }"
               name="renovation_flag"
-              rules="required"
               mode="eager"
             >
               <base-checkbox
