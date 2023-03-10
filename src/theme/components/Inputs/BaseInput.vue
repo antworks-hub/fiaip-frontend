@@ -36,6 +36,7 @@
           class="form-control"
           aria-describedby="addon-right addon-left"
           v-on="listeners"
+          :maxlength="maxlength"
         >
       </slot>
       <slot name="addonRight">
@@ -109,6 +110,9 @@ export default {
     tooltipText: {
       type: String,
       default: null
+    },
+    maxlength: {
+      default: ''
     }
   },
   data () {

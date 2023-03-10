@@ -3,7 +3,7 @@
     <div class="col-12">
       <card>
         <page-header
-          title="ERRORI"
+          title="ELENCO CIVICI"
           @backClick="$router.back()"
         />
 
@@ -11,15 +11,13 @@
           v-model="query"
           :pagination="pagination"
           :columns="tableColumns"
-          :items="errors"
+          :items="streetNumbers"
           :search-fields="searchFields"
           :meta="meta"
-          :deletable="false"
-          name-prop="last_name"
-          new-button-label="NUOVO ERRORE"
-          @onNew="$router.push('errori/nuovo')"
-          @onEdit="$router.push(`errori/${$event.id}/modifica`)"
-          @onShow="$router.push(`errori/${$event.id}/visualizza`)"
+          :showable="false"
+          new-button-label="NUOVO CIVICO"
+          @onNew="$router.push('/tabelle/civici/nuovo')"
+          @onEdit="$router.push(`/tabelle/civici/${$event.id}/modifica`)"
           @onDelete="handleDelete($event.id)"
         />
       </card>
@@ -44,7 +42,6 @@ export default {
         page: 1,
         sort: null,
         filter: {
-          user_ownership: true,
           custom_search: ''
         }
       },
@@ -56,34 +53,43 @@ export default {
       ],
       tableColumns: [
         {
-          prop: 'id',
-          label: 'Numero',
+          prop: 'street.printable_street_name',
+          label: 'Via',
           sortable: true,
         },
         {
-          prop: 'title',
-          label: 'Titolo',
+          prop: 'area.area_name',
+          label: 'Area',
           sortable: true,
         },
         {
-          prop: 'date',
-          label: 'Data invio',
+          prop: 'district.district_name',
+          label: 'Circoscrizione',
           sortable: true,
         },
         {
-          prop: 'error_status.status',
-          label: 'Stato',
+          prop: 'number_from',
+          label: 'Numero Da',
           sortable: true,
-        }
+        },
+        {
+          prop: 'number_to',
+          label: 'Numero A',
+          sortable: true,
+        },
+        {
+          prop: 'number_type',
+          label: 'Tipo Numero',
+          sortable: true,
+        },
+
       ]
     }
   },
 
   computed: {
     ...mapGetters({
-      errors: 'errors/items',
-      user: 'auth/user',
-      meta: 'errors/meta'
+      streetNumbers: 'streetNumbers/items',
     })
   },
 
@@ -94,11 +100,17 @@ export default {
       },
       deep: true
     },
+    meta: {
+      handler (val) {
+        this.pagination.total = val.total
+      },
+      deep: true
+    }
   },
 
   created () {
     const storedQuery = JSON.parse(secureStorage.getItem('tableQuery'))
-    if (storedQuery && storedQuery.entity === 'errors') {
+    if (storedQuery && storedQuery.entity === 'streetNumbers') {
       this.query = storedQuery.query
     } else {
       this.handleFetch()
@@ -111,20 +123,20 @@ export default {
 
   methods: {
     ...mapActions({
-      fetch_Errors: 'errors/fetch',
-      delete_Error: 'errors/delete',
-      clear_Errors: 'errors/resetItems'
+      fetch_StreetNumbers: 'streetNumbers/fetch',
+      delete_StreetNumbers: 'streetNumbers/delete',
+      clear_StreetNumbers: 'streetNumbers/resetItems'
     }),
     handleFetch () {
-      this.fetch_Errors(this.query)
-      secureStorage.setItem('tableQuery', JSON.stringify({ entity: 'errors', query: this.query }))
+      this.fetch_StreetNumbers(this.query)
+      secureStorage.setItem('tableQuery', JSON.stringify({ entity: 'streetNumbers', query: this.query }))
     },
     handleDelete (id) {
-      this.delete_Error(id).then((res) => {
-        this.fetch_Errors(this.query)
+      this.delete_StreetNumbers(id).then((res) => {
+        this.fetch_StreetNumbers(this.query)
         this.$notify({
           message:
-            'Errore eliminato con successo.',
+            'Civico eliminato con successo.',
           timeout: 5000,
           icon: '',
           horizontalAlign: 'right',

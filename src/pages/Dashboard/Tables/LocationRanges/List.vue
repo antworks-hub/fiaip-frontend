@@ -3,7 +3,7 @@
     <div class="col-12">
       <card>
         <page-header
-          title="ERRORI"
+          title="ELENCO FASCE"
           @backClick="$router.back()"
         />
 
@@ -11,15 +11,13 @@
           v-model="query"
           :pagination="pagination"
           :columns="tableColumns"
-          :items="errors"
+          :items="locationRanges"
           :search-fields="searchFields"
           :meta="meta"
-          :deletable="false"
-          name-prop="last_name"
-          new-button-label="NUOVO ERRORE"
-          @onNew="$router.push('errori/nuovo')"
-          @onEdit="$router.push(`errori/${$event.id}/modifica`)"
-          @onShow="$router.push(`errori/${$event.id}/visualizza`)"
+          :showable="false"
+          new-button-label="NUOVA FASCIA"
+          @onNew="$router.push('/tabelle/fasce/nuovo')"
+          @onEdit="$router.push(`/tabelle/fasce/${$event.id}/modifica`)"
           @onDelete="handleDelete($event.id)"
         />
       </card>
@@ -44,7 +42,6 @@ export default {
         page: 1,
         sort: null,
         filter: {
-          user_ownership: true,
           custom_search: ''
         }
       },
@@ -56,23 +53,23 @@ export default {
       ],
       tableColumns: [
         {
-          prop: 'id',
-          label: 'Numero',
+          prop: 'area.area_name',
+          label: 'Area',
           sortable: true,
         },
         {
-          prop: 'title',
-          label: 'Titolo',
+          prop: 'district.district_name',
+          label: 'Distretto',
           sortable: true,
         },
         {
-          prop: 'date',
-          label: 'Data invio',
+          prop: 'min_value',
+          label: 'Valore minimo',
           sortable: true,
         },
         {
-          prop: 'error_status.status',
-          label: 'Stato',
+          prop: 'max_value',
+          label: 'Valore Massimo',
           sortable: true,
         }
       ]
@@ -81,9 +78,8 @@ export default {
 
   computed: {
     ...mapGetters({
-      errors: 'errors/items',
-      user: 'auth/user',
-      meta: 'errors/meta'
+      locationRanges: 'locationRanges/items',
+      meta: 'locationRanges/meta'
     })
   },
 
@@ -94,11 +90,17 @@ export default {
       },
       deep: true
     },
+    meta: {
+      handler (val) {
+        this.pagination.total = val.total
+      },
+      deep: true
+    }
   },
 
   created () {
     const storedQuery = JSON.parse(secureStorage.getItem('tableQuery'))
-    if (storedQuery && storedQuery.entity === 'errors') {
+    if (storedQuery && storedQuery.entity === 'elements') {
       this.query = storedQuery.query
     } else {
       this.handleFetch()
@@ -106,25 +108,25 @@ export default {
   },
 
   beforeDestroy () {
-    this.clear_Errors()
+    this.clear_LocationRanges()
   },
 
   methods: {
     ...mapActions({
-      fetch_Errors: 'errors/fetch',
-      delete_Error: 'errors/delete',
-      clear_Errors: 'errors/resetItems'
+      fetch_LocationRanges: 'locationRanges/fetch',
+      delete_LocationRanges: 'locationRanges/delete',
+      clear_LocationRanges: 'locationRanges/resetItems'
     }),
     handleFetch () {
-      this.fetch_Errors(this.query)
-      secureStorage.setItem('tableQuery', JSON.stringify({ entity: 'errors', query: this.query }))
+      this.fetch_LocationRanges(this.query)
+      secureStorage.setItem('tableQuery', JSON.stringify({ entity: 'locationRanges', query: this.query }))
     },
     handleDelete (id) {
-      this.delete_Error(id).then((res) => {
-        this.fetch_Errors(this.query)
+      this.delete_LocationRanges(id).then((res) => {
+        this.fetch_LocationRanges(this.query)
         this.$notify({
           message:
-            'Errore eliminato con successo.',
+            'Fascia eliminata con successo.',
           timeout: 5000,
           icon: '',
           horizontalAlign: 'right',

@@ -52,7 +52,7 @@ export default {
   },
 
   beforeDestroy () {
-    this.clearError(),
+    this.clearError()
     this.clearErrorStatuses()
   },
 
@@ -61,7 +61,6 @@ export default {
       getError: 'errors/get',
       updateError: 'errors/update',
       deleteError: 'errors/delete',
-      reloadError: 'errors/reload',
       clearError: 'errors/resetSingle',
       updateValue: 'errors/updateValue',
       fetchErrorStatuses: 'errorStatuses/fetch',
@@ -79,10 +78,7 @@ export default {
           verticalAlign: 'top',
           type: 'success'
         })
-        this.reloadError().then((res) => {
-          this.isLoading = false
-          this.$router.push('/errori')
-        })
+        this.isLoading = false
       }).catch((err) => {
         this.isLoading = false
         if (err.response.status === 422) {

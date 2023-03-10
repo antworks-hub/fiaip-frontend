@@ -3,18 +3,17 @@
     <div class="col-12">
       <card>
         <page-header
-          title="MODIFICA ALLEGATO"
+          title="MODIFICA ELEMENTO"
           :loading="isLoading"
           @backClick="$router.back()"
         />
-        <attachment-form
-            :attachment="attachment"
+        <elements-form
+            :value="element"
             :api-errors="apiErrors"
             :is-loading="isLoading"
-            :attachmentTypes="attachmentTypes"
             @submit="handleSubmit"
-            @clearErrors="apiErrors = {}"
             @delete="handleDelete"
+            @input="updateValue($event)"
         />
       </card>
     </div>
@@ -22,52 +21,48 @@
 </template>
 <script>
 import { mapGetters, mapActions } from 'vuex'
-import AttachmentForm from "./Form.vue";
+import ElementsForm from './Form.vue'
 
 export default {
-  components: { AttachmentForm },
+  components: { ElementsForm },
+
   data () {
     return {
-      attachmentId: null,
+      userId: null,
       isLoading: false,
       apiErrors: {}
     }
   },
 
+  computed: {
+    ...mapGetters({
+      element: 'elements/single',
+    })
+  },
+
   created () {
-    this.attachmentId = this.$route.params.id
-    this.getAttachment(this.attachmentId),
-    this.fetchAttachmentTypes()
+    this.elementId = this.$route.params.id
+    this.getElement(this.elementId)
   },
 
   beforeDestroy () {
-    this.clearAttachment(),
-    this.clearAttachmentTypes()
-  },
-
-  computed: {
-    ...mapGetters({
-      attachment: 'attachments/single',
-      attachmentTypes: 'attachmentTypes/items'
-    })
+    this.clearElement()
   },
 
   methods: {
     ...mapActions({
-      getAttachment: 'attachments/get',
-      uploadAttachment: 'attachments/upload',
-      deleteAttachment: 'attachments/delete',
-      clearAttachment: 'attachments/resetSingle',
-      updateValue: 'attachments/updateValue',
-      fetchAttachmentTypes: 'attachmentTypes/fetch',
-      clearAttachmentTypes: 'attachmentTypes/resetSingle'
+      getElement: 'elements/get',
+      updateElement: 'elements/update',
+      deleteElement: 'elements/delete',
+      clearElement: 'elements/resetSingle',
+      updateValue: 'elements/updateValue',
     }),
     handleSubmit () {
       this.isLoading = true
-      this.uploadAttachment({ payload: this.attachment, path: `/${this.attachmentId}` }).then((res) => {
+      this.updateElement({ id: this.elementId, payload: this.element }).then((res) => {
         this.$notify({
           message:
-            'Allegato aggiornato con successo.',
+            'Elemento aggiornato con successo.',
           timeout: 5000,
           icon: '',
           horizontalAlign: 'right',
@@ -75,7 +70,7 @@ export default {
           type: 'success'
         })
         this.isLoading = false
-        this.$router.push('/gestione-allegati')
+        this.$router.push('/tabelle/elementi')
       }).catch((err) => {
         this.isLoading = false
         if (err.response.status === 422) {
@@ -85,18 +80,18 @@ export default {
     },
     handleDelete () {
       this.isLoading = true
-      this.deleteAttachment(this.attachmentId).then((res) => {
+      this.deleteElement(this.elementId).then((res) => {
         this.isLoading = false
         this.$notify({
           message:
-            'Allegato eliminato con successo.',
+            'Elemento eliminato con successo.',
           timeout: 5000,
           icon: '',
           horizontalAlign: 'right',
           verticalAlign: 'top',
           type: 'success'
         })
-        this.$router.push('/gestione-allegati')
+        this.$router.push('/tabelle/elementi')
       })
     }
   }

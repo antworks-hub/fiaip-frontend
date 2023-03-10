@@ -6,8 +6,6 @@ const state = () => ({
 })
 const getters = {
   ...crud.getters,
-
-
 }
 const actions = {
   ...crud.actions

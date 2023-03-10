@@ -6,6 +6,7 @@ import usersRoutes from '@/routes/dashboard/users.routes.js'
 import computationsRoutes from '@/routes/dashboard/computations.routes.js'
 import AttachmentsRoutes from '@/routes/dashboard/attachments.routes.js'
 import Errors from "@/routes/dashboard/errors.routes.js";
+import Tables from "@/routes/dashboard/tables.routes.js";
 
 const dashboardPages = {
   path: '/',
@@ -20,7 +21,8 @@ const dashboardPages = {
     ...usersRoutes,
     ...computationsRoutes,
     ...AttachmentsRoutes,
-    ...Errors
+    ...Errors,
+    ...Tables,
   ]
 }
 

@@ -3,18 +3,18 @@
     <div class="col-12">
       <card>
         <page-header
-          title="MODIFICA ALLEGATO"
+          title="MODIFICA CAP"
           :loading="isLoading"
           @backClick="$router.back()"
         />
-        <attachment-form
-            :attachment="attachment"
+        <zipcode-form
+            :value="zipCode"
             :api-errors="apiErrors"
             :is-loading="isLoading"
-            :attachmentTypes="attachmentTypes"
+            :streets="streets"
             @submit="handleSubmit"
-            @clearErrors="apiErrors = {}"
             @delete="handleDelete"
+            @input="updateValue($event)"
         />
       </card>
     </div>
@@ -22,52 +22,53 @@
 </template>
 <script>
 import { mapGetters, mapActions } from 'vuex'
-import AttachmentForm from "./Form.vue";
+import ZipcodeForm from './Form.vue'
 
 export default {
-  components: { AttachmentForm },
+  components: { ZipcodeForm },
+
   data () {
     return {
-      attachmentId: null,
+      userId: null,
       isLoading: false,
       apiErrors: {}
     }
   },
 
+  computed: {
+    ...mapGetters({
+      zipCode: 'zipCodes/single',
+      streets: 'streets/items',
+    })
+  },
+
   created () {
-    this.attachmentId = this.$route.params.id
-    this.getAttachment(this.attachmentId),
-    this.fetchAttachmentTypes()
+    this.zipCodeId = this.$route.params.id
+    this.getZipCode(this.zipCodeId)
+    this.fetchStreets()
   },
 
   beforeDestroy () {
-    this.clearAttachment(),
-    this.clearAttachmentTypes()
-  },
-
-  computed: {
-    ...mapGetters({
-      attachment: 'attachments/single',
-      attachmentTypes: 'attachmentTypes/items'
-    })
+    this.clearZipCode()
+    this.clearStreets()
   },
 
   methods: {
     ...mapActions({
-      getAttachment: 'attachments/get',
-      uploadAttachment: 'attachments/upload',
-      deleteAttachment: 'attachments/delete',
-      clearAttachment: 'attachments/resetSingle',
-      updateValue: 'attachments/updateValue',
-      fetchAttachmentTypes: 'attachmentTypes/fetch',
-      clearAttachmentTypes: 'attachmentTypes/resetSingle'
+      getZipCode: 'zipCodes/get',
+      updateZipCode: 'zipCodes/update',
+      deleteZipCode: 'zipCodes/delete',
+      clearZipCode: 'zipCodes/resetSingle',
+      updateValue: 'zipCodes/updateValue',
+      fetchStreets: 'streets/fetch',
+      clearStreets: 'streets/resetSingle'
     }),
     handleSubmit () {
       this.isLoading = true
-      this.uploadAttachment({ payload: this.attachment, path: `/${this.attachmentId}` }).then((res) => {
+      this.updateZipCode({ id: this.zipCodeId, payload: this.zipCode }).then((res) => {
         this.$notify({
           message:
-            'Allegato aggiornato con successo.',
+            'Cap aggiornato con successo.',
           timeout: 5000,
           icon: '',
           horizontalAlign: 'right',
@@ -75,7 +76,7 @@ export default {
           type: 'success'
         })
         this.isLoading = false
-        this.$router.push('/gestione-allegati')
+        this.$router.push('/tabelle/cap')
       }).catch((err) => {
         this.isLoading = false
         if (err.response.status === 422) {
@@ -85,18 +86,18 @@ export default {
     },
     handleDelete () {
       this.isLoading = true
-      this.deleteAttachment(this.attachmentId).then((res) => {
+      this.deleteZipCode(this.zipCodeId).then((res) => {
         this.isLoading = false
         this.$notify({
           message:
-            'Allegato eliminato con successo.',
+            'Cap eliminato con successo.',
           timeout: 5000,
           icon: '',
           horizontalAlign: 'right',
           verticalAlign: 'top',
           type: 'success'
         })
-        this.$router.push('/gestione-allegati')
+        this.$router.push('/tabelle/cap')
       })
     }
   }

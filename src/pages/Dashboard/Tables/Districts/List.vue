@@ -3,7 +3,7 @@
     <div class="col-12">
       <card>
         <page-header
-          title="ERRORI"
+          title="ELENCO CIRCOSCRIZIONI"
           @backClick="$router.back()"
         />
 
@@ -11,15 +11,13 @@
           v-model="query"
           :pagination="pagination"
           :columns="tableColumns"
-          :items="errors"
+          :items="districts"
           :search-fields="searchFields"
           :meta="meta"
-          :deletable="false"
-          name-prop="last_name"
-          new-button-label="NUOVO ERRORE"
-          @onNew="$router.push('errori/nuovo')"
-          @onEdit="$router.push(`errori/${$event.id}/modifica`)"
-          @onShow="$router.push(`errori/${$event.id}/visualizza`)"
+          :showable="false"
+          new-button-label="NUOVA CIRCOSCRIZIONE"
+          @onNew="$router.push('/tabelle/circoscrizioni/nuovo')"
+          @onEdit="$router.push(`/tabelle/circoscrizioni/${$event.id}/modifica`)"
           @onDelete="handleDelete($event.id)"
         />
       </card>
@@ -44,7 +42,6 @@ export default {
         page: 1,
         sort: null,
         filter: {
-          user_ownership: true,
           custom_search: ''
         }
       },
@@ -56,23 +53,13 @@ export default {
       ],
       tableColumns: [
         {
-          prop: 'id',
-          label: 'Numero',
+          prop: 'district_name',
+          label: 'Nome Circoscrizione',
           sortable: true,
         },
         {
-          prop: 'title',
-          label: 'Titolo',
-          sortable: true,
-        },
-        {
-          prop: 'date',
-          label: 'Data invio',
-          sortable: true,
-        },
-        {
-          prop: 'error_status.status',
-          label: 'Stato',
+          prop: 'district_number',
+          label: 'Numero Circoscrizione',
           sortable: true,
         }
       ]
@@ -81,9 +68,8 @@ export default {
 
   computed: {
     ...mapGetters({
-      errors: 'errors/items',
-      user: 'auth/user',
-      meta: 'errors/meta'
+      districts: 'districts/items',
+      meta: 'districts/meta'
     })
   },
 
@@ -94,11 +80,17 @@ export default {
       },
       deep: true
     },
+    meta: {
+      handler (val) {
+        this.pagination.total = val.total
+      },
+      deep: true
+    }
   },
 
   created () {
     const storedQuery = JSON.parse(secureStorage.getItem('tableQuery'))
-    if (storedQuery && storedQuery.entity === 'errors') {
+    if (storedQuery && storedQuery.entity === 'districts') {
       this.query = storedQuery.query
     } else {
       this.handleFetch()
@@ -111,20 +103,20 @@ export default {
 
   methods: {
     ...mapActions({
-      fetch_Errors: 'errors/fetch',
-      delete_Error: 'errors/delete',
-      clear_Errors: 'errors/resetItems'
+      fetch_Districts: 'districts/fetch',
+      delete_Districts: 'districts/delete',
+      clear_Districts: 'districts/resetItems'
     }),
     handleFetch () {
-      this.fetch_Errors(this.query)
-      secureStorage.setItem('tableQuery', JSON.stringify({ entity: 'errors', query: this.query }))
+      this.fetch_Districts(this.query)
+      secureStorage.setItem('tableQuery', JSON.stringify({ entity: 'districts', query: this.query }))
     },
     handleDelete (id) {
-      this.delete_Error(id).then((res) => {
-        this.fetch_Errors(this.query)
+      this.delete_Districts(id).then((res) => {
+        this.fetch_Districts(this.query)
         this.$notify({
           message:
-            'Errore eliminato con successo.',
+            'Circoscrizione eliminata con successo.',
           timeout: 5000,
           icon: '',
           horizontalAlign: 'right',

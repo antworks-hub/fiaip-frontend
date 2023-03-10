@@ -3,18 +3,17 @@
     <div class="col-12">
       <card>
         <page-header
-          title="MODIFICA ALLEGATO"
+          title="MODIFICA CIRCOSCRIZIONE"
           :loading="isLoading"
           @backClick="$router.back()"
         />
-        <attachment-form
-            :attachment="attachment"
+        <district-form
+            :value="district"
             :api-errors="apiErrors"
             :is-loading="isLoading"
-            :attachmentTypes="attachmentTypes"
             @submit="handleSubmit"
-            @clearErrors="apiErrors = {}"
             @delete="handleDelete"
+            @input="updateValue($event)"
         />
       </card>
     </div>
@@ -22,52 +21,48 @@
 </template>
 <script>
 import { mapGetters, mapActions } from 'vuex'
-import AttachmentForm from "./Form.vue";
+import DistrictForm from './Form.vue'
 
 export default {
-  components: { AttachmentForm },
+  components: { DistrictForm },
+
   data () {
     return {
-      attachmentId: null,
+      userId: null,
       isLoading: false,
       apiErrors: {}
     }
   },
 
+  computed: {
+    ...mapGetters({
+      district: 'districts/single',
+    })
+  },
+
   created () {
-    this.attachmentId = this.$route.params.id
-    this.getAttachment(this.attachmentId),
-    this.fetchAttachmentTypes()
+    this.districtId = this.$route.params.id
+    this.getDistrict(this.districtId)
   },
 
   beforeDestroy () {
-    this.clearAttachment(),
-    this.clearAttachmentTypes()
-  },
-
-  computed: {
-    ...mapGetters({
-      attachment: 'attachments/single',
-      attachmentTypes: 'attachmentTypes/items'
-    })
+    this.clearDistrict()
   },
 
   methods: {
     ...mapActions({
-      getAttachment: 'attachments/get',
-      uploadAttachment: 'attachments/upload',
-      deleteAttachment: 'attachments/delete',
-      clearAttachment: 'attachments/resetSingle',
-      updateValue: 'attachments/updateValue',
-      fetchAttachmentTypes: 'attachmentTypes/fetch',
-      clearAttachmentTypes: 'attachmentTypes/resetSingle'
+      getDistrict: 'districts/get',
+      updateDistrict: 'districts/update',
+      deleteDistrict: 'districts/delete',
+      clearDistrict: 'districts/resetSingle',
+      updateValue: 'districts/updateValue',
     }),
     handleSubmit () {
       this.isLoading = true
-      this.uploadAttachment({ payload: this.attachment, path: `/${this.attachmentId}` }).then((res) => {
+      this.updateDistrict({ id: this.districtId, payload: this.district }).then((res) => {
         this.$notify({
           message:
-            'Allegato aggiornato con successo.',
+            'Circoscrizione aggiornata con successo.',
           timeout: 5000,
           icon: '',
           horizontalAlign: 'right',
@@ -75,7 +70,7 @@ export default {
           type: 'success'
         })
         this.isLoading = false
-        this.$router.push('/gestione-allegati')
+        this.$router.push('/tabelle/circoscrizioni')
       }).catch((err) => {
         this.isLoading = false
         if (err.response.status === 422) {
@@ -85,18 +80,18 @@ export default {
     },
     handleDelete () {
       this.isLoading = true
-      this.deleteAttachment(this.attachmentId).then((res) => {
+      this.deleteDistrict(this.districtId).then((res) => {
         this.isLoading = false
         this.$notify({
           message:
-            'Allegato eliminato con successo.',
+            'Circoscrizione eliminata con successo.',
           timeout: 5000,
           icon: '',
           horizontalAlign: 'right',
           verticalAlign: 'top',
           type: 'success'
         })
-        this.$router.push('/gestione-allegati')
+        this.$router.push('/tabelle/circoscrizioni')
       })
     }
   }

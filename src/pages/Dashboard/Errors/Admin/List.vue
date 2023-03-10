@@ -84,6 +84,7 @@ export default {
   computed: {
     ...mapGetters({
       errors: 'errors/items',
+      meta: 'errors/meta'
     })
   },
 

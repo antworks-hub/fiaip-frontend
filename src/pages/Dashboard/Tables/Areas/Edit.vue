@@ -3,18 +3,17 @@
     <div class="col-12">
       <card>
         <page-header
-          title="MODIFICA ALLEGATO"
+          title="MODIFICA AREA"
           :loading="isLoading"
           @backClick="$router.back()"
         />
-        <attachment-form
-            :attachment="attachment"
+        <area-form
+            :value="area"
             :api-errors="apiErrors"
             :is-loading="isLoading"
-            :attachmentTypes="attachmentTypes"
             @submit="handleSubmit"
-            @clearErrors="apiErrors = {}"
             @delete="handleDelete"
+            @input="updateValue($event)"
         />
       </card>
     </div>
@@ -22,52 +21,48 @@
 </template>
 <script>
 import { mapGetters, mapActions } from 'vuex'
-import AttachmentForm from "./Form.vue";
+import AreaForm from './Form.vue'
 
 export default {
-  components: { AttachmentForm },
+  components: { AreaForm },
+
   data () {
     return {
-      attachmentId: null,
+      userId: null,
       isLoading: false,
       apiErrors: {}
     }
   },
 
+  computed: {
+    ...mapGetters({
+      area: 'areas/single',
+    })
+  },
+
   created () {
-    this.attachmentId = this.$route.params.id
-    this.getAttachment(this.attachmentId),
-    this.fetchAttachmentTypes()
+    this.areaId = this.$route.params.id
+    this.getArea(this.areaId)
   },
 
   beforeDestroy () {
-    this.clearAttachment(),
-    this.clearAttachmentTypes()
-  },
-
-  computed: {
-    ...mapGetters({
-      attachment: 'attachments/single',
-      attachmentTypes: 'attachmentTypes/items'
-    })
+    this.clearArea()
   },
 
   methods: {
     ...mapActions({
-      getAttachment: 'attachments/get',
-      uploadAttachment: 'attachments/upload',
-      deleteAttachment: 'attachments/delete',
-      clearAttachment: 'attachments/resetSingle',
-      updateValue: 'attachments/updateValue',
-      fetchAttachmentTypes: 'attachmentTypes/fetch',
-      clearAttachmentTypes: 'attachmentTypes/resetSingle'
+      getArea: 'areas/get',
+      updateArea: 'areas/update',
+      deleteArea: 'areas/delete',
+      clearArea: 'areas/resetSingle',
+      updateValue: 'areas/updateValue',
     }),
     handleSubmit () {
       this.isLoading = true
-      this.uploadAttachment({ payload: this.attachment, path: `/${this.attachmentId}` }).then((res) => {
+      this.updateArea({ id: this.areaId, payload: this.area }).then((res) => {
         this.$notify({
           message:
-            'Allegato aggiornato con successo.',
+            'Area aggiornata con successo.',
           timeout: 5000,
           icon: '',
           horizontalAlign: 'right',
@@ -75,7 +70,7 @@ export default {
           type: 'success'
         })
         this.isLoading = false
-        this.$router.push('/gestione-allegati')
+        this.$router.push('/tabelle/aree')
       }).catch((err) => {
         this.isLoading = false
         if (err.response.status === 422) {
@@ -85,18 +80,18 @@ export default {
     },
     handleDelete () {
       this.isLoading = true
-      this.deleteAttachment(this.attachmentId).then((res) => {
+      this.deleteArea(this.areaId).then((res) => {
         this.isLoading = false
         this.$notify({
           message:
-            'Allegato eliminato con successo.',
+            'Area eliminata con successo.',
           timeout: 5000,
           icon: '',
           horizontalAlign: 'right',
           verticalAlign: 'top',
           type: 'success'
         })
-        this.$router.push('/gestione-allegati')
+        this.$router.push('/tabelle/aree')
       })
     }
   }
