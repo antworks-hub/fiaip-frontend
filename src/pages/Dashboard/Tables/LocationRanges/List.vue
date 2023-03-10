@@ -53,13 +53,13 @@ export default {
       ],
       tableColumns: [
         {
-          prop: 'area.area_name',
-          label: 'Area',
+          prop: 'district_id',
+          label: 'Circoscrizione',
           sortable: true,
         },
         {
-          prop: 'district.district_name',
-          label: 'Distretto',
+          prop: 'area.area_code',
+          label: 'Area',
           sortable: true,
         },
         {

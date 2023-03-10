@@ -53,18 +53,23 @@ export default {
       ],
       tableColumns: [
         {
-          prop: 'street.printable_street_name',
-          label: 'Via',
+          prop: 'id',
+          label: 'CivicoID',
           sortable: true,
         },
         {
-          prop: 'area.area_name',
-          label: 'Area',
+          prop: 'district_id',
+          label: 'CircoscrizioneID',
           sortable: true,
         },
         {
-          prop: 'district.district_name',
-          label: 'Circoscrizione',
+          prop: 'street_id',
+          label: 'ViaID',
+          sortable: true,
+        },
+        {
+          prop: 'area.area_code',
+          label: 'AreaID',
           sortable: true,
         },
         {
@@ -79,7 +84,7 @@ export default {
         },
         {
           prop: 'number_type',
-          label: 'Tipo Numero',
+          label: 'NumeroTipo',
           sortable: true,
         },
 

@@ -53,8 +53,13 @@ export default {
       ],
       tableColumns: [
         {
+          prop: 'id',
+          label: 'Codice',
+          sortable: true,
+        },
+        {
           prop: 'street_name',
-          label: 'Nome',
+          label: 'Descrizione',
           sortable: true,
         },
         {

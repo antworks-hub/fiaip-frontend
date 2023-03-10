@@ -53,15 +53,15 @@ export default {
       ],
       tableColumns: [
         {
-          prop: 'area_name',
-          label: 'Nome',
-          sortable: true,
-        },
-        {
           prop: 'area_code',
           label: 'Codice',
           sortable: true,
-        }
+        },
+        {
+          prop: 'area_name',
+          label: 'Descrizione',
+          sortable: true,
+        },
       ]
     }
   },

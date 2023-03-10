@@ -53,25 +53,25 @@ export default {
       ],
       tableColumns: [
         {
+          prop: 'number',
+          label: 'Codice',
+          sortable: true,
+        },
+        {
           prop: 'description',
           label: 'Descrizione',
           sortable: true,
         },
         {
           prop: 'base_flag_html',
-          label: 'Base',
+          label: 'Elemento Base',
           sortable: true,
         },
         {
           prop: 'renovation_flag_html',
-          label: 'Rinnovamento',
+          label: 'Elemento di Ristrutturazione',
           sortable: true,
         },
-        {
-          prop: 'number',
-          label: 'Numero',
-          sortable: true,
-        }
       ]
     }
   },

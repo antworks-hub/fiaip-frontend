@@ -53,15 +53,15 @@ export default {
       ],
       tableColumns: [
         {
-          prop: 'district_name',
-          label: 'Nome Circoscrizione',
+          prop: 'district_number',
+          label: 'Codice',
           sortable: true,
         },
         {
-          prop: 'district_number',
-          label: 'Numero Circoscrizione',
+          prop: 'district_name',
+          label: 'Descrizione',
           sortable: true,
-        }
+        },
       ]
     }
   },
